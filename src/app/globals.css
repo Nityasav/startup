@@ -1,26 +1,300 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #ffffff;
+  --primary: #00aaff;
+  --primary-dark: #0088cc;
+  --primary-light: #3cc0ff;
+  --secondary: #0c1016;
+  --gradient-1: #00aaff;
+  --gradient-2: #ff00aa;
+  --gradient-3: #aa00ff;
+  --font-audiowide: 'Audiowide', cursive;
+  --font-syncopate: 'Syncopate', sans-serif;
+  --font-tech-mono: 'Share Tech Mono', monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-light: var(--primary-light);
+  --color-secondary: var(--secondary);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #000000;
+    --foreground: #ffffff;
+    --secondary: #0c1016;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-tech-mono);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-audiowide);
+  letter-spacing: 1px;
+}
+
+p {
+  font-family: var(--font-tech-mono);
+  letter-spacing: 0.5px;
+}
+
+/* Glowing effect */
+.glow {
+  position: relative;
+}
+
+.glow::before, .glow::after {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  background: linear-gradient(45deg, 
+    var(--gradient-1), 
+    var(--gradient-2), 
+    var(--gradient-3), 
+    var(--gradient-1));
+  background-size: 400%;
+  z-index: -1;
+  animation: glowing 20s linear infinite;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.glow:hover::before, .glow:hover::after {
+  opacity: 1;
+}
+
+.glow::after {
+  filter: blur(16px);
+}
+
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* Embedded Button Styles */
+.embedded-btn {
+  position: relative;
+  font-family: var(--font-syncopate);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: bold;
+  color: transparent;
+  background: linear-gradient(90deg, var(--primary), var(--gradient-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px rgba(0, 170, 255, 0.4);
+  padding: 12px 24px;
+  cursor: pointer;
+}
+
+.embedded-btn::before, .embedded-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  transition: all 0.5s ease;
+}
+
+.embedded-btn::before {
+  left: -30px;
+  right: calc(50% + 30px);
+}
+
+.embedded-btn::after {
+  right: -30px;
+  left: calc(50% + 30px);
+}
+
+.embedded-btn:hover {
+  transform: scale(1.05);
+  text-shadow: 
+    0 0 5px rgba(0, 170, 255, 0.5),
+    0 0 15px rgba(0, 170, 255, 0.3),
+    0 0 25px rgba(255, 0, 170, 0.3);
+  letter-spacing: 4px;
+}
+
+.embedded-btn:hover::before {
+  left: -50px;
+  right: calc(50% + 10px);
+}
+
+.embedded-btn:hover::after {
+  right: -50px;
+  left: calc(50% + 10px);
+}
+
+.embedded-btn-container {
+  position: relative;
+  display: inline-block;
+}
+
+.btn-glow-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(0, 170, 255, 0.15) 0%,
+    rgba(255, 0, 170, 0.15) 30%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.5s ease;
+  z-index: -1;
+}
+
+.embedded-btn-container:hover .btn-glow-circle {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.5);
+}
+
+.embedded-btn-line {
+  position: absolute;
+  background: var(--primary);
+  opacity: 0.2;
+  transition: all 0.3s ease;
+}
+
+.embedded-btn-line-v {
+  width: 1px;
+  height: 50vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.embedded-btn-line-h {
+  height: 1px;
+  width: 100vw;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.embedded-btn-container:hover .embedded-btn-line {
+  opacity: 0.5;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease forwards;
+  opacity: 0;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(90deg, var(--primary), var(--gradient-3));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  font-family: var(--font-audiowide);
+  text-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(12, 16, 22, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 170, 255, 0.2);
+  box-shadow: 0 0 15px rgba(0, 170, 255, 0.15);
+}
+
+/* Floating animation */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.floating {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Cyberpunk title effect */
+.cyber-title {
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-syncopate);
+  letter-spacing: 2px;
+}
+
+.cyber-title::before {
+  content: attr(data-text);
+  position: absolute;
+  left: -2px;
+  text-shadow: 2px 0 var(--gradient-1);
+  top: 0;
+  color: var(--foreground);
+  overflow: hidden;
+  clip: rect(0, 900px, 0, 0);
+  animation: cyber-glitch 3s infinite linear alternate-reverse;
+}
+
+.cyber-title::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 2px;
+  text-shadow: -2px 0 var(--gradient-2);
+  top: 0;
+  color: var(--foreground);
+  overflow: hidden;
+  clip: rect(0, 900px, 0, 0);
+  animation: cyber-glitch 2s infinite linear alternate-reverse;
+}
+
+@keyframes cyber-glitch {
+  0% {
+    clip: rect(16px, 9999px, 56px, 0);
+  }
+  20% {
+    clip: rect(36px, 9999px, 16px, 0);
+  }
+  40% {
+    clip: rect(64px, 9999px, 84px, 0);
+  }
+  60% {
+    clip: rect(12px, 9999px, 28px, 0);
+  }
+  80% {
+    clip: rect(48px, 9999px, 91px, 0);
+  }
+  100% {
+    clip: rect(5px, 9999px, 72px, 0);
+  }
 }
