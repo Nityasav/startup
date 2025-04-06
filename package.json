@@ -14,6 +14,8 @@
     "@fontsource/rajdhani": "^5.2.5",
     "@fontsource/share-tech-mono": "^5.2.5",
     "@fontsource/syncopate": "^5.2.5",
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
+    "@supabase/supabase-js": "^2.49.4",
     "framer-motion": "^12.6.3",
     "next": "15.2.4",
     "react": "^19.0.0",

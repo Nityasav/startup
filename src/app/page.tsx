@@ -6,7 +6,7 @@ import FloatingButton from './components/FloatingButton';
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center overflow-hidden">
+    <div className="flex flex-col items-center justify-center min-h-screen p-8 pt-16 text-center overflow-hidden">
       <main className="max-w-4xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: -20 }}

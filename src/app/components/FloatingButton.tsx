@@ -26,10 +26,6 @@ export default function FloatingButton({
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >
-      {/* Horizontal and vertical lines that appear to connect with background grid */}
-      <div className="embedded-btn-line embedded-btn-line-h" />
-      <div className="embedded-btn-line embedded-btn-line-v" />
-      
       {/* Circular glow effect */}
       <div className="btn-glow-circle" />
       

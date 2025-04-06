@@ -1,241 +1,133 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import ScrollReveal from '../components/ScrollReveal';
 import GradientText from '../components/GradientText';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
-export default function DashboardPage() {
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
+export default function Dashboard() {
+  const { user, loading, signOut } = useAuth();
+  const router = useRouter();
+  const [redirecting, setRedirecting] = useState(false);
 
-  const staggerChildren = {
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-    hidden: {
-      opacity: 0,
-    },
-  };
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      setRedirecting(true);
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
+  if (loading || redirecting) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-8">
+        <div className="flex items-center justify-center">
+          <svg className="animate-spin -ml-1 mr-3 h-8 w-8 text-[#00aaff]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span className="text-xl">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <motion.header 
-        className="bg-[#171717] p-4 border-b border-gray-800"
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <motion.h1 
-            className="text-xl font-bold"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-          >
-            <span className="text-white">Startup</span>
-            <GradientText animated>Sight</GradientText>
-          </motion.h1>
-          <div className="flex items-center gap-4">
-            <motion.button 
-              className="text-gray-400 hover:text-white"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Settings
-            </motion.button>
-            <motion.div 
-              className="w-8 h-8 rounded-full bg-[#0055ff] flex items-center justify-center"
-              whileHover={{ scale: 1.1, boxShadow: '0 0 15px rgba(0, 85, 255, 0.5)' }}
-              whileTap={{ scale: 0.95 }}
-            >
-              JD
-            </motion.div>
-          </div>
-        </div>
-      </motion.header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto p-6">
-        <motion.h2 
-          className="text-2xl font-bold mb-6"
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-          transition={{ duration: 0.5, delay: 0.2 }}
+    <div className="flex flex-col items-center justify-center min-h-screen p-8 pt-24">
+      <main className="max-w-4xl mx-auto relative z-10 w-full">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mb-12 text-center"
         >
-          Business Idea Analysis
-        </motion.h2>
-        
-        {/* Analysis Form */}
-        <ScrollReveal>
+          <h1 className="text-4xl md:text-6xl font-bold tracking-wide mb-4">
+            <GradientText animated>DASHBOARD</GradientText>
+          </h1>
+
           <motion.div 
-            className="bg-[#171717] rounded-lg p-6 mb-8 glass"
-            whileHover={{ boxShadow: '0 0 20px rgba(0, 85, 255, 0.2)' }}
-          >
-            <motion.h3 
-              className="text-xl mb-4"
-              variants={fadeIn}
-              initial="hidden"
-              animate="visible"
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              Describe Your Business Idea
-            </motion.h3>
-            <motion.textarea
-              className="w-full h-40 p-4 rounded bg-black border border-gray-700 focus:border-[#0055ff] focus:outline-none mb-4"
-              placeholder="Describe your business idea in detail. Include target market, product/service description, revenue model, and any unique selling points."
-              variants={fadeIn}
-              initial="hidden"
-              animate="visible"
-              transition={{ duration: 0.5, delay: 0.4 }}
-            ></motion.textarea>
-            <motion.button 
-              className="btn-primary py-2 px-6 rounded glow"
-              variants={fadeIn}
-              initial="hidden"
-              animate="visible"
-              transition={{ duration: 0.5, delay: 0.5 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Analyze Idea
-            </motion.button>
-          </motion.div>
-        </ScrollReveal>
-
-        {/* Analysis Results Section */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-          variants={staggerChildren}
-          initial="hidden"
-          animate="visible"
-          transition={{ delay: 0.6 }}
-        >
-          {/* Market Analysis */}
-          <ScrollReveal delay={0.2} direction="left">
-            <motion.div 
-              className="bg-[#171717] rounded-lg p-6 glass h-full"
-              whileHover={{ 
-                y: -5,
-                boxShadow: '0 10px 30px rgba(0, 85, 255, 0.2)' 
-              }}
-              transition={{ duration: 0.3 }}
-            >
-              <h3 className="text-[#0055ff] text-xl font-bold mb-4">Market Analysis</h3>
-              <div className="mb-4">
-                <h4 className="font-medium mb-2">Market Saturation</h4>
-                <div className="w-full bg-black rounded-full h-4 overflow-hidden">
-                  <motion.div 
-                    className="bg-[#0055ff] h-4 rounded-full" 
-                    initial={{ width: 0 }}
-                    animate={{ width: '65%' }}
-                    transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
-                  />
-                </div>
-                <p className="text-sm text-gray-400 mt-1">65% - Moderately Saturated</p>
-              </div>
-              <div className="mb-4">
-                <h4 className="font-medium mb-2">Key Competitors</h4>
-                <motion.ul 
-                  className="list-disc list-inside text-gray-300"
-                  variants={staggerChildren}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <motion.li variants={fadeIn}>Competitor A - Market Leader (35% share)</motion.li>
-                  <motion.li variants={fadeIn}>Competitor B - Growing Rapidly</motion.li>
-                  <motion.li variants={fadeIn}>Competitor C - Similar Value Proposition</motion.li>
-                </motion.ul>
-              </div>
-              <div>
-                <h4 className="font-medium mb-2">Market Trends</h4>
-                <p className="text-gray-300">The market is growing at 12% annually, with increasing demand for personalized solutions.</p>
-              </div>
-            </motion.div>
-          </ScrollReveal>
-
-          {/* Feasibility Score */}
-          <ScrollReveal delay={0.4} direction="right">
-            <motion.div 
-              className="bg-[#171717] rounded-lg p-6 glass h-full"
-              whileHover={{ 
-                y: -5,
-                boxShadow: '0 10px 30px rgba(0, 85, 255, 0.2)' 
-              }}
-              transition={{ duration: 0.3 }}
-            >
-              <h3 className="text-[#0055ff] text-xl font-bold mb-4">Feasibility Score</h3>
-              <div className="flex justify-center mb-6">
-                <div className="relative w-40 h-40">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <motion.span 
-                      className="text-4xl font-bold"
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 1.2, duration: 0.5 }}
-                    >
-                      78
-                    </motion.span>
-                  </div>
-                  <svg className="w-full h-full" viewBox="0 0 100 100">
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="45"
-                      fill="none"
-                      stroke="#333"
-                      strokeWidth="5"
-                    />
-                    <motion.circle
-                      cx="50"
-                      cy="50"
-                      r="45"
-                      fill="none"
-                      stroke="#0055ff"
-                      strokeWidth="5"
-                      strokeDasharray="283"
-                      initial={{ strokeDashoffset: 283 }}
-                      animate={{ strokeDashoffset: 62 }}
-                      transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
-                      transform="rotate(-90 50 50)"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <div>
-                <h4 className="font-medium mb-2">Key Strengths</h4>
-                <motion.ul 
-                  className="text-green-500 mb-4"
-                  variants={staggerChildren}
-                  initial="hidden"
-                  animate="visible"
-                  transition={{ delayChildren: 1.0 }}
-                >
-                  <motion.li variants={fadeIn}>• Strong unique value proposition</motion.li>
-                  <motion.li variants={fadeIn}>• Growing target market</motion.li>
-                  <motion.li variants={fadeIn}>• Scalable business model</motion.li>
-                </motion.ul>
-                <h4 className="font-medium mb-2">Areas of Concern</h4>
-                <motion.ul 
-                  className="text-red-500"
-                  variants={staggerChildren}
-                  initial="hidden"
-                  animate="visible"
-                  transition={{ delayChildren: 1.3 }}
-                >
-                  <motion.li variants={fadeIn}>• High initial investment required</motion.li>
-                  <motion.li variants={fadeIn}>• Strong established competitors</motion.li>
-                  <motion.li variants={fadeIn}>• Complex regulatory environment</motion.li>
-                </motion.ul>
-              </div>
-            </motion.div>
-          </ScrollReveal>
+            className="w-20 h-1 bg-gradient-to-r from-[#00aaff] to-[#ff00aa] mx-auto rounded-full my-8"
+            initial={{ width: 0 }}
+            animate={{ width: 80 }}
+            transition={{ duration: 1, delay: 0.3 }}
+          />
         </motion.div>
+        
+        <div className="space-y-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="glass p-8 rounded-lg"
+          >
+            <h2 className="text-2xl font-audiowide mb-6">
+              Welcome, <GradientText>{user?.email?.split('@')[0] || 'User'}</GradientText>
+            </h2>
+            
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-black/40 rounded-lg p-4 border border-[#00aaff]/20">
+                  <h3 className="text-lg font-bold mb-2 text-[#00aaff]">Account Details</h3>
+                  <p className="text-gray-300"><span className="text-gray-400">Email:</span> {user?.email}</p>
+                  <p className="text-gray-300"><span className="text-gray-400">User ID:</span> {user?.id.substring(0, 8)}...</p>
+                  <p className="text-gray-300"><span className="text-gray-400">Created:</span> {new Date(user?.created_at || '').toLocaleDateString()}</p>
+                </div>
+                
+                <div className="bg-black/40 rounded-lg p-4 border border-[#00aaff]/20">
+                  <h3 className="text-lg font-bold mb-2 text-[#00aaff]">Account Status</h3>
+                  <p className="text-gray-300">
+                    <span className="text-gray-400">Status:</span>{' '}
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-900 text-green-200">
+                      Active
+                    </span>
+                  </p>
+                  <p className="text-gray-300"><span className="text-gray-400">Plan:</span> Free Trial</p>
+                  <p className="text-gray-300"><span className="text-gray-400">Email verified:</span> {user?.email_confirmed_at ? 'Yes' : 'No'}</p>
+                </div>
+              </div>
+              
+              <motion.div
+                className="flex justify-center mt-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+              >
+                <button
+                  onClick={() => signOut()}
+                  className="bg-black/40 hover:bg-black/60 text-[#ff00aa] border border-[#ff00aa]/30 px-4 py-2 rounded transition-colors duration-300"
+                >
+                  Sign Out
+                </button>
+              </motion.div>
+            </div>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="glass p-8 rounded-lg"
+          >
+            <h2 className="text-2xl font-audiowide mb-6">
+              Your <GradientText>Projects</GradientText>
+            </h2>
+            
+            <div className="text-center p-8">
+              <p className="text-gray-400 mb-4">You don't have any projects yet.</p>
+              <Link href="/projects">
+                <motion.button 
+                  className="bg-gradient-to-r from-[#00aaff] to-[#ff00aa] hover:from-[#3cc0ff] hover:to-[#ff3caa] text-white font-medium py-2 px-4 rounded-md transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Create Your First Project
+                </motion.button>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
       </main>
     </div>
   );

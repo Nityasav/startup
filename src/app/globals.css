@@ -106,7 +106,7 @@ p {
 }
 
 .embedded-btn::before, .embedded-btn::after {
-  content: '';
+  content: none;
   position: absolute;
   top: 50%;
   height: 1px;
@@ -134,11 +134,13 @@ p {
 }
 
 .embedded-btn:hover::before {
+  content: none;
   left: -50px;
   right: calc(50% + 10px);
 }
 
 .embedded-btn:hover::after {
+  content: none;
   right: -50px;
   left: calc(50% + 10px);
 }
@@ -173,6 +175,7 @@ p {
 }
 
 .embedded-btn-line {
+  display: none;
   position: absolute;
   background: var(--primary);
   opacity: 0.2;
@@ -180,6 +183,7 @@ p {
 }
 
 .embedded-btn-line-v {
+  display: none;
   width: 1px;
   height: 50vh;
   left: 50%;
@@ -187,6 +191,7 @@ p {
 }
 
 .embedded-btn-line-h {
+  display: none;
   height: 1px;
   width: 100vw;
   top: 50%;
