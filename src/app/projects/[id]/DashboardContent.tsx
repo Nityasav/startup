@@ -3,8 +3,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
-import { Project, Conversation, Message, createConversation, getProjectConversations, updateConversation, deleteConversation } from '@/lib/projects';
+import { Project, Conversation, Message, createConversation, getProjectConversations, updateConversation, deleteConversation, generateImage, addImageToConversation } from '@/lib/projects';
 
 interface DashboardContentProps {
   projectId: string;
@@ -21,6 +22,7 @@ export default function DashboardContent({ projectId }: DashboardContentProps) {
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
 
   const loadConversations = useCallback(async () => {
     if (!projectId || !user) return;
@@ -177,6 +179,49 @@ export default function DashboardContent({ projectId }: DashboardContentProps) {
     setMenuOpenId(menuOpenId === conversationId ? null : conversationId);
   };
 
+  // Add a function to handle image generation
+  const handleGenerateImage = async (prompt: string) => {
+    if (!selectedConversation || isLoading) return;
+    
+    try {
+      setIsLoading(true);
+      setIsGeneratingImage(true);
+      console.log("Generating image with prompt:", prompt);
+      
+      const result = await generateImage(prompt);
+      if (!result || !result.url) {
+        throw new Error("Failed to generate image");
+      }
+      
+      console.log("Image generated:", result.url);
+      
+      // Add the image to the conversation
+      await addImageToConversation(
+        selectedConversation.id,
+        result.url,
+        prompt,
+        result.revisedPrompt || prompt
+      );
+      
+      // Reload conversations to show the new image
+      await loadConversations();
+      
+    } catch (error) {
+      console.error("Error generating image:", error);
+      alert("Failed to generate image. Please try again.");
+    } finally {
+      setIsLoading(false);
+      setIsGeneratingImage(false);
+    }
+  };
+
+  const showImagePromptDialog = () => {
+    const prompt = window.prompt("Enter a detailed prompt for image generation (e.g., 'A professional logo for a tech startup with blue and green colors'):");
+    if (prompt && prompt.trim()) {
+      handleGenerateImage(prompt.trim());
+    }
+  };
+
   if (!user) {
     return null;
   }
@@ -307,6 +352,20 @@ export default function DashboardContent({ projectId }: DashboardContentProps) {
                           {msg.role === 'assistant' ? 'AI Assistant' : 'You'}
                         </p>
                         <p className="mt-2 whitespace-pre-wrap">{msg.content}</p>
+                        
+                        {/* Display image if present */}
+                        {msg.imageUrl && (
+                          <div className="mt-3 relative">
+                            <Image 
+                              src={msg.imageUrl} 
+                              alt="Generated image" 
+                              width={400} 
+                              height={400}
+                              className="rounded-lg object-contain max-w-full" 
+                            />
+                          </div>
+                        )}
+                        
                         <p className="text-xs text-gray-500 mt-2">
                           {new Date(msg.timestamp).toLocaleTimeString()}
                         </p>
@@ -334,18 +393,49 @@ export default function DashboardContent({ projectId }: DashboardContentProps) {
                 {/* Message Input */}
                 <form onSubmit={handleSubmit} className="mt-auto">
                   <div className="relative">
+                    <div className="flex items-center gap-2 mb-2">
+                      <button
+                        type="button"
+                        onClick={showImagePromptDialog}
+                        disabled={isLoading || !selectedConversation}
+                        className="px-3 py-1.5 text-sm rounded bg-purple-600/20 text-purple-400 border border-purple-800 hover:bg-purple-600/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                        title="Generate an image (requires an active conversation)"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                        </svg>
+                        Generate Image
+                      </button>
+                      {isGeneratingImage && message.trim().startsWith('/image') && (
+                        <span className="text-xs text-gray-400">Generating image...</span>
+                      )}
+                    </div>
                     <textarea
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder={selectedConversation 
-                        ? "Continue this conversation..." 
+                        ? "Continue this conversation or type '/image your detailed prompt' to generate an image..." 
                         : conversations.length === 0 
                           ? "Type to start your first conversation..." 
                           : "Type to begin your new conversation..."}
                       rows={3}
                       disabled={isLoading}
                       className="w-full px-4 py-3 bg-black/30 border border-gray-800 rounded-lg focus:border-[#00aaff] focus:ring-1 focus:ring-[#00aaff] outline-none resize-none disabled:opacity-50"
-                      onKeyDown={handleKeyDown}
+                      onKeyDown={(e) => {
+                        // Special handling for /image command
+                        if (message.trim().startsWith('/image') && e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          const prompt = message.trim().substring(7).trim();
+                          if (prompt && selectedConversation) {
+                            handleGenerateImage(prompt);
+                            setMessage('');
+                          }
+                          return;
+                        }
+                        
+                        // Regular message handling
+                        handleKeyDown(e);
+                      }}
                     />
                     <button
                       type="submit"
@@ -356,7 +446,7 @@ export default function DashboardContent({ projectId }: DashboardContentProps) {
                           : 'text-gray-600'} 
                         transition-all disabled:opacity-50`}
                     >
-                      {isLoading ? (
+                      {isLoading && !isGeneratingImage ? (
                         <div className="h-6 w-6 border-2 border-[#00aaff] border-t-transparent rounded-full animate-spin" />
                       ) : (
                         <svg

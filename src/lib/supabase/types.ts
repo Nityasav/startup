@@ -21,6 +21,7 @@ export interface Database {
             role: 'user' | 'assistant';
             content: string;
             timestamp: string;
+            imageUrl?: string;
           }[];
           created_at: string;
           updated_at: string;

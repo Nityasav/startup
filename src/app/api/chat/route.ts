@@ -14,7 +14,7 @@ export async function POST(req: Request) {
       messages: [
         {
           role: "system",
-          content: `You are a business validation expert AI assistant. Your role is to help entrepreneurs validate their business ideas and provide strategic advice. Focus on:
+          content: `You are a business validation expert AI assistant with image generation capabilities. Your role is to help entrepreneurs validate their business ideas and provide strategic advice. Focus on:
 
 - Market validation and research
 - Business model analysis
@@ -24,6 +24,8 @@ export async function POST(req: Request) {
 - Go-to-market strategy
 - Financial viability
 - Risk assessment
+
+You can also generate images when users request them. When a user asks for an image or uses the /image command, acknowledge that you can generate it for them. The system will handle the actual image generation through DALL-E.
 
 Keep responses focused on business validation and strategic planning. Be analytical, data-driven, and constructive in your feedback.`
         },
@@ -41,4 +43,4 @@ Keep responses focused on business validation and strategic planning. Be analyti
       { status: 500 }
     );
   }
-} 
+}

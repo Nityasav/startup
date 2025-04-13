@@ -268,4 +268,93 @@ export async function deleteConversation(conversationId: string): Promise<boolea
     console.error('Unexpected error in deleteConversation:', err);
     return false;
   }
+}
+
+export async function generateImage(prompt: string): Promise<{ url: string; revisedPrompt: string } | null> {
+  try {
+    const response = await fetch('/api/image', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ prompt }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to generate image');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error generating image:', error);
+    return null;
+  }
+}
+
+export async function addImageToConversation(
+  conversationId: string,
+  imageUrl: string,
+  prompt: string,
+  revisedPrompt: string
+): Promise<Conversation | null> {
+  const supabase = createClient();
+
+  try {
+    // Get the existing conversation
+    const { data: existingConversation, error: fetchError } = await supabase
+      .from('conversations')
+      .select('*')
+      .eq('id', conversationId)
+      .single();
+
+    if (fetchError) {
+      console.error('Error fetching conversation:', fetchError);
+      return null;
+    }
+
+    // Cast to proper type to fix type error
+    const existingMessages = existingConversation.messages as Message[];
+    
+    // Create messages for the image request and response
+    const userMessage = {
+      role: 'user' as const,
+      content: `Generate image: ${prompt}`,
+      timestamp: new Date().toISOString(),
+    };
+    
+    const assistantMessage = {
+      role: 'assistant' as const,
+      content: revisedPrompt,
+      timestamp: new Date().toISOString(),
+      imageUrl: imageUrl // Add the image URL to the message
+    };
+
+    // Add both messages to the conversation
+    const updatedMessages = [
+      ...existingMessages,
+      userMessage,
+      assistantMessage
+    ];
+
+    // Update the conversation with the new messages
+    const { data: updatedConversation, error: updateError } = await supabase
+      .from('conversations')
+      .update({
+        messages: updatedMessages
+      })
+      .eq('id', conversationId)
+      .select()
+      .single();
+
+    if (updateError) {
+      console.error('Error updating conversation with image:', updateError);
+      return null;
+    }
+
+    return updatedConversation as Conversation;
+  } catch (err) {
+    console.error('Unexpected error in addImageToConversation:', err);
+    return null;
+  }
 } 
