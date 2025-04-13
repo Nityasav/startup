@@ -1,13 +1,21 @@
 'use client';
 
+import { useState } from 'react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
+import { createProject } from '@/lib/projects';
 
 export default function NewProject() {
   const { user } = useAuth();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    projectType: 'new' as 'new' | 'existing'
+  });
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -20,6 +28,31 @@ export default function NewProject() {
     return null;
   }
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const project = await createProject(
+        user.id,
+        formData.name,
+        formData.description,
+        formData.projectType
+      );
+
+      if (project) {
+        router.push(`/projects/${project.id}`);
+      } else {
+        throw new Error('Failed to create project');
+      }
+    } catch (error) {
+      console.error('Error creating project:', error);
+      // You might want to show an error message to the user here
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen pt-24 px-4 md:px-6">
       <div className="max-w-2xl mx-auto">
@@ -30,7 +63,7 @@ export default function NewProject() {
         >
           <h1 className="text-3xl font-bold mb-8">Create New Project</h1>
 
-          <div className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="projectName" className="block mb-2 text-sm font-medium text-gray-200">
                 Project Name
@@ -38,8 +71,11 @@ export default function NewProject() {
               <input
                 type="text"
                 id="projectName"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="w-full px-4 py-2 rounded-lg bg-black/30 border border-gray-800 focus:border-[#00aaff] focus:ring-1 focus:ring-[#00aaff] outline-none transition-all"
                 placeholder="E.g., Coffee Shop Business"
+                required
               />
             </div>
 
@@ -49,9 +85,12 @@ export default function NewProject() {
               </label>
               <textarea
                 id="projectDescription"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={4}
                 className="w-full px-4 py-2 rounded-lg bg-black/30 border border-gray-800 focus:border-[#00aaff] focus:ring-1 focus:ring-[#00aaff] outline-none transition-all"
                 placeholder="Describe your business idea briefly..."
+                required
               ></textarea>
             </div>
 
@@ -60,11 +99,25 @@ export default function NewProject() {
                 Project Type
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="border border-gray-800 rounded-lg p-4 cursor-pointer hover:border-[#00aaff] transition-all">
+                <div
+                  onClick={() => setFormData({ ...formData, projectType: 'new' })}
+                  className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                    formData.projectType === 'new'
+                      ? 'border-[#00aaff] bg-[#00aaff]/10'
+                      : 'border-gray-800 hover:border-[#00aaff]/50'
+                  }`}
+                >
                   <h3 className="font-medium mb-1">New Business</h3>
                   <p className="text-gray-400 text-sm">Start from scratch with a new business idea</p>
                 </div>
-                <div className="border border-gray-800 rounded-lg p-4 cursor-pointer hover:border-[#00aaff] transition-all">
+                <div
+                  onClick={() => setFormData({ ...formData, projectType: 'existing' })}
+                  className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                    formData.projectType === 'existing'
+                      ? 'border-[#00aaff] bg-[#00aaff]/10'
+                      : 'border-gray-800 hover:border-[#00aaff]/50'
+                  }`}
+                >
                   <h3 className="font-medium mb-1">Existing Business</h3>
                   <p className="text-gray-400 text-sm">Analyze and improve your current business</p>
                 </div>
@@ -73,21 +126,25 @@ export default function NewProject() {
 
             <div className="flex justify-end space-x-4 pt-6">
               <button
+                type="button"
                 onClick={() => router.back()}
                 className="px-6 py-2 rounded-lg border border-gray-800 hover:bg-gray-800/50 transition-all"
+                disabled={isLoading}
               >
                 Cancel
               </button>
               <button
-                onClick={() => router.push('/projects')}
-                className="px-6 py-2 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-600 hover:from-cyan-500 hover:to-blue-700 
-                        text-white transition-all duration-300 shadow-[0_0_15px_rgba(0,170,255,0.5)] 
-                        hover:shadow-[0_0_25px_rgba(0,170,255,0.7)]"
+                type="submit"
+                disabled={isLoading}
+                className={`px-6 py-2 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-600 
+                          hover:from-cyan-500 hover:to-blue-700 text-white transition-all duration-300 
+                          shadow-[0_0_15px_rgba(0,170,255,0.5)] hover:shadow-[0_0_25px_rgba(0,170,255,0.7)]
+                          ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
-                Create Project
+                {isLoading ? 'Creating...' : 'Create Project'}
               </button>
             </div>
-          </div>
+          </form>
         </motion.div>
       </div>
     </div>

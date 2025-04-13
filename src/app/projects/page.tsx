@@ -1,19 +1,41 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
+import { Project, getUserProjects } from '@/lib/projects';
 
 export default function Projects() {
   const { user } = useAuth();
   const router = useRouter();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Redirect to login if not authenticated
   useEffect(() => {
     if (!user) {
       router.push('/login');
+      return;
     }
+
+    // Load user's projects
+    const loadProjects = async () => {
+      try {
+        console.log('Loading projects for user:', user.id);
+        const userProjects = await getUserProjects(user.id);
+        setProjects(userProjects);
+        setError(null);
+      } catch (err) {
+        console.error('Error in loadProjects:', err);
+        setError('Failed to load projects. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProjects();
   }, [user, router]);
 
   if (!user) {
@@ -36,6 +58,11 @@ export default function Projects() {
           <p className="text-gray-400 text-lg">
             Start a new project or continue working on existing ones
           </p>
+          {error && (
+            <div className="mt-4 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400">
+              {error}
+            </div>
+          )}
         </motion.div>
 
         {/* New Project Button */}
@@ -66,13 +93,42 @@ export default function Projects() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {/* Project Card Placeholder */}
-          <div className="bg-black/30 backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-[#00aaff]/50 transition-all duration-300">
-            <h3 className="text-xl font-semibold mb-2 text-[#00aaff]">Your Projects</h3>
-            <p className="text-gray-400">
-              Start your first project by clicking the button above. Your projects will appear here.
-            </p>
-          </div>
+          {isLoading ? (
+            // Loading skeleton
+            <div className="bg-black/30 backdrop-blur-sm border border-gray-800 rounded-lg p-6 animate-pulse">
+              <div className="h-6 w-2/3 bg-gray-700 rounded mb-4"></div>
+              <div className="h-4 w-full bg-gray-700 rounded"></div>
+            </div>
+          ) : projects.length > 0 ? (
+            // Project cards
+            projects.map((project) => (
+              <motion.div
+                key={project.id}
+                whileHover={{ scale: 1.02 }}
+                className="bg-black/30 backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-[#00aaff]/50 transition-all duration-300 cursor-pointer"
+                onClick={() => router.push(`/projects/${project.id}`)}
+              >
+                <h3 className="text-xl font-semibold mb-2 text-[#00aaff]">{project.name}</h3>
+                <p className="text-gray-400 mb-4">{project.description}</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-500">
+                    {new Date(project.created_at).toLocaleDateString()}
+                  </span>
+                  <span className="text-sm px-3 py-1 rounded-full bg-[#00aaff]/10 text-[#00aaff]">
+                    {project.project_type}
+                  </span>
+                </div>
+              </motion.div>
+            ))
+          ) : (
+            // Empty state
+            <div className="bg-black/30 backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-[#00aaff]/50 transition-all duration-300">
+              <h3 className="text-xl font-semibold mb-2 text-[#00aaff]">Your First Project</h3>
+              <p className="text-gray-400">
+                Start your journey by clicking the "Start New Project" button above.
+              </p>
+            </div>
+          )}
 
           {/* AI Assistant Card */}
           <div className="bg-black/30 backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-[#00aaff]/50 transition-all duration-300">
