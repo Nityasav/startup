@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
@@ -37,7 +38,20 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-wider">
+          <Link href="/" className="flex items-center gap-2 text-xl font-bold tracking-wider">
+            <div className="w-20 h-12 relative">
+              <Image 
+                src={process.env.NEXT_PUBLIC_LOGO_PATH || "/logo.png"}
+                alt="StartupSight Logo" 
+                width={80}
+                height={48}
+                className="object-contain"
+                priority
+                onError={(e) => {
+                  console.error('Error loading header logo:', e);
+                }}
+              />
+            </div>
             <span className="cyber-title text-sm md:text-base" data-text="STARTUPSIGHT">STARTUPSIGHT</span>
           </Link>
           
