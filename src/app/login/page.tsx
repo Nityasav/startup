@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import GradientText from "../components/GradientText";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signInUser } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
@@ -11,15 +11,27 @@ import { useAuth } from "@/context/AuthContext";
 export default function LoginPage() {
   const stagger = 0.1;
   const router = useRouter();
-  const { refreshUser } = useAuth();
+  const { refreshUser, user } = useAuth();
   
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    remember: false
+    remember: true // Default to true
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Redirect to projects if already logged in
+  useEffect(() => {
+    if (user) {
+      router.push('/projects');
+    }
+  }, [user, router]);
+
+  // Return null during the redirect to prevent flash of login screen
+  if (user) {
+    return null;
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -35,17 +47,17 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      // Call the Supabase signin function
-      const { data, error } = await signInUser(formData.email, formData.password);
+      // Call the Supabase signin function with remember option
+      const { data, error } = await signInUser(formData.email, formData.password, formData.remember);
       
       if (error) {
         setError(error.message);
         return;
       }
       
-      // If successful, refresh the user context and navigate to dashboard
+      // If successful, refresh the user context and navigate to projects
       await refreshUser();
-      router.push('/dashboard');
+      router.push('/projects');
     } catch (err) {
       console.error('Error during login:', err);
       setError('An unexpected error occurred. Please try again.');

@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Project, getUserProjects } from '@/lib/projects';
 
 export default function Projects() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -15,31 +15,46 @@ export default function Projects() {
 
   // Redirect to login if not authenticated
   useEffect(() => {
-    if (!user) {
+    if (!authLoading && !user) {
       router.push('/login');
       return;
     }
 
-    // Load user's projects
-    const loadProjects = async () => {
-      try {
-        console.log('Loading projects for user:', user.id);
-        const userProjects = await getUserProjects(user.id);
-        setProjects(userProjects);
-        setError(null);
-      } catch (err) {
-        console.error('Error in loadProjects:', err);
-        setError('Failed to load projects. Please try again later.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    // Only load projects when we have a user and not during auth loading
+    if (!authLoading && user) {
+      const loadProjects = async () => {
+        try {
+          console.log('Loading projects for user:', user.id);
+          const userProjects = await getUserProjects(user.id);
+          setProjects(userProjects);
+          setError(null);
+        } catch (err) {
+          console.error('Error in loadProjects:', err);
+          setError('Failed to load projects. Please try again later.');
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
-    loadProjects();
-  }, [user, router]);
+      loadProjects();
+    }
+  }, [user, router, authLoading]);
 
+  // Show loading state during authentication or project loading
+  if (authLoading || (!user && isLoading)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="w-16 h-16 border-4 border-t-transparent border-[#00aaff] rounded-full animate-spin"></div>
+          <p className="mt-4 text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Return null if no user - we're redirecting
   if (!user) {
-    return null; // Return null while redirecting
+    return null;
   }
 
   return (
@@ -129,20 +144,6 @@ export default function Projects() {
               </p>
             </div>
           )}
-
-          {/* AI Assistant Card */}
-          <div className="bg-black/30 backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-[#00aaff]/50 transition-all duration-300">
-            <h3 className="text-xl font-semibold mb-2 text-[#00aaff]">AI Assistant</h3>
-            <p className="text-gray-400">
-              Need help? Ask our AI assistant anything about your startup ideas or market analysis.
-            </p>
-            <button
-              onClick={() => router.push('/chat')}
-              className="mt-4 text-[#00aaff] hover:text-white transition-colors duration-300"
-            >
-              Start a conversation →
-            </button>
-          </div>
         </motion.div>
       </div>
     </div>

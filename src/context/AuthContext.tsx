@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser, signOutUser, supabase } from '@/lib/supabase';
+import { getCurrentUser, signOutUser, supabase, isAuthenticated } from '@/lib/supabase';
 
 interface AuthContextType {
   user: User | null;
@@ -38,18 +38,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Check for user session on initial load
   useEffect(() => {
-    const checkUser = async () => {
+    const checkSession = async () => {
       setLoading(true);
-      await refreshUser();
-      setLoading(false);
+      try {
+        // Check for an active session first
+        const { session, error } = await isAuthenticated();
+        
+        if (error) {
+          console.error('Error checking session:', error);
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+        
+        if (session) {
+          await refreshUser();
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error('Error in checkSession:', error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    checkUser();
+    checkSession();
 
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event: AuthChangeEvent, session: Session | null) => {
-        if (event === 'SIGNED_IN') {
+        console.log('Auth state changed:', event);
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
           refreshUser();
         } else if (event === 'SIGNED_OUT') {
           setUser(null);

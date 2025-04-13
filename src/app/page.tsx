@@ -2,25 +2,28 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import GradientText from './components/GradientText';
 import FloatingButton from './components/FloatingButton';
 
 export default function Home() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
+  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
-    if (user) {
+    // Check if user is authenticated
+    if (!loading && user) {
+      setRedirecting(true);
       router.push('/projects');
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
-  // Only render landing page content if user is not logged in
-  if (user) {
-    return null; // Return null while redirecting to prevent flash of content
+  // Show nothing during loading or redirecting
+  if (loading || redirecting || user) {
+    return null;
   }
 
   return (
@@ -74,10 +77,13 @@ export default function Home() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
-          className="mb-20 relative"
+          className="mb-20 relative grid grid-cols-1 md:grid-cols-2 gap-6 max-w-lg mx-auto"
         >
           <FloatingButton href="/signup">
-            START YOUR JOURNEY
+            SIGN UP
+          </FloatingButton>
+          <FloatingButton href="/login" variant="secondary">
+            LOG IN
           </FloatingButton>
         </motion.div>
       </main>
