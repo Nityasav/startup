@@ -15,7 +15,7 @@ export default function About() {
         >
           <h1 className="text-4xl md:text-6xl font-bold tracking-wide mb-4">
             <span className="cyber-title" data-text="ABOUT">ABOUT</span>{" "}
-            <GradientText animated className="ml-2">US</GradientText>
+            <GradientText animated className="ml-2">Venturly</GradientText>
           </h1>
 
           <motion.div 
@@ -35,7 +35,7 @@ export default function About() {
           >
             <h2 className="text-2xl md:text-3xl mb-6 font-audiowide">Our <GradientText>Vision</GradientText></h2>
             <p className="mb-4 text-gray-300">
-              Founded in 2023, StartupSight emerged from a simple yet powerful observation: too many brilliant business ideas fail due to preventable factors. Our AI-powered platform was built to democratize market research and business validation, giving entrepreneurs the tools once available only to industry giants.
+              Founded in 2023, Venturly emerged from a simple yet powerful observation: too many brilliant business ideas fail due to preventable factors. Our AI-powered platform was built to democratize market research and business validation, giving entrepreneurs the insights they need to succeed.
             </p>
             <p className="text-gray-300">
               We envision a future where innovation thrives, unburdened by the traditional barriers of market entry. By providing accurate, data-driven insights, we aim to increase the success rate of startups worldwide, fostering a more dynamic global economy.

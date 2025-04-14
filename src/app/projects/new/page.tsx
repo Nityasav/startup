@@ -11,6 +11,7 @@ export default function NewProject() {
   const { user } = useAuth();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -31,8 +32,11 @@ export default function NewProject() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
 
     try {
+      console.log('Creating project for user:', user.id);
+      
       const project = await createProject(
         user.id,
         formData.name,
@@ -43,11 +47,11 @@ export default function NewProject() {
       if (project) {
         router.push(`/projects/${project.id}`);
       } else {
-        throw new Error('Failed to create project');
+        throw new Error('Failed to create project. Please check the console for details or try again.');
       }
     } catch (error) {
       console.error('Error creating project:', error);
-      // You might want to show an error message to the user here
+      setError(error instanceof Error ? error.message : 'An unknown error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -62,6 +66,12 @@ export default function NewProject() {
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-3xl font-bold mb-8">Create New Project</h1>
+
+          {error && (
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-500">
+              {error}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>

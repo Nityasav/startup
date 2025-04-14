@@ -15,14 +15,13 @@ const audiowide = Audiowide({
 });
 
 export const metadata: Metadata = {
-  title: "StartupSight | Your Business Idea Advisor",
-  description: "Analyze your business ideas, check market saturation, and assess feasibility with AI-powered insights.",
+  title: "Venturly | Your Business Idea Advisor",
+  description: "AI-powered business analysis and validation for entrepreneurs",
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico' }
+      { url: '/logo.png' }
     ],
-    apple: '/images/logo.svg',
+    apple: '/logo.png',
   }
 };
 
@@ -34,8 +33,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="alternate icon" href="/favicon.ico" />
+        <link rel="icon" href="/logo.png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
       </head>
       <body
         className={`${audiowide.variable} font-tech-mono antialiased`}

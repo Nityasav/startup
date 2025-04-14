@@ -41,18 +41,18 @@ const Header = () => {
           <Link href="/" className="flex items-center gap-2 text-xl font-bold tracking-wider">
             <div className="w-20 h-12 relative">
               <Image 
-                src={process.env.NEXT_PUBLIC_LOGO_PATH || "/logo.png"}
-                alt="StartupSight Logo" 
+                src="/logo.png"
                 width={80}
                 height={48}
-                className="object-contain"
+                alt="Venturly Logo"
+                className="h-12 object-contain"
                 priority
-                onError={(e) => {
-                  console.error('Error loading header logo:', e);
-                }}
               />
             </div>
-            <span className="cyber-title text-sm md:text-base" data-text="STARTUPSIGHT">STARTUPSIGHT</span>
+            <div className="flex flex-col">
+              <span className="cyber-title text-sm md:text-base" data-text="VENTURLY">VENTURLY</span>
+              <span className="text-xs text-gray-400 hidden md:inline-block">A Startup that makes Startups.</span>
+            </div>
           </Link>
           
           <nav className="hidden md:flex items-center gap-8">

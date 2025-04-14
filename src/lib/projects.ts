@@ -13,6 +13,18 @@ export async function createProject(
   projectType: 'new' | 'existing'
 ): Promise<Project | null> {
   const supabase = createClient();
+  console.log('Creating project with data:', { userId, name, description, projectType });
+
+  // Add debugging for authentication
+  const { data: authData } = await supabase.auth.getUser();
+  console.log('Current authenticated user:', authData?.user || 'No user found');
+  console.log('Auth user ID:', authData?.user?.id || 'No ID');
+  console.log('Requested user ID for project:', userId);
+  
+  // Check if user IDs match
+  if (authData?.user?.id !== userId) {
+    console.warn('Auth user ID does not match requested user ID for project creation');
+  }
 
   try {
     const { data, error } = await supabase
@@ -29,10 +41,21 @@ export async function createProject(
       .single();
 
     if (error) {
-      console.error('Error creating project:', error);
+      console.error('Error creating project:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code
+      });
       return null;
     }
 
+    if (!data) {
+      console.error('No project data returned after successful insert');
+      return null;
+    }
+
+    console.log('Project created successfully:', data);
     return data;
   } catch (err) {
     console.error('Unexpected error in createProject:', err);

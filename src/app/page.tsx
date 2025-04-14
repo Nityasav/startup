@@ -43,22 +43,18 @@ export default function Home() {
               className="w-80 h-48 md:w-96 md:h-64 relative"
             >
               <Image 
-                src={`/images/logo.png?v=${new Date().getTime()}`}
-                alt="StartupSight Logo" 
-                width={384}
+                src="/logo.png"
+                alt="Venturly Logo" 
+                width={320}
                 height={240}
                 className="object-contain"
                 priority
-                onError={(e) => {
-                  console.error('Error loading homepage logo:', e);
-                }}
               />
             </motion.div>
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold tracking-wide">
-            <span className="cyber-title" data-text="STARTUP">STARTUP</span>
-            <GradientText animated className="ml-2">SIGHT</GradientText>
+            <GradientText animated className="ml-2">VENTURLY</GradientText>
           </h1>
         </motion.div>
         

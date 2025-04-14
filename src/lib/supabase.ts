@@ -1,17 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from './supabase/client';
 
-// These environment variables need to be set in .env.local
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-
-// For client-side usage with persistent sessions
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-    storageKey: 'startup-sight-auth-storage'
-  }
-});
+// Get the singleton Supabase client instance
+export const supabase = createClient();
 
 // Create a user
 export const createUser = async (email: string, password: string) => {
