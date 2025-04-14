@@ -64,9 +64,9 @@ export default function Home() {
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
           className="text-xl md:text-2xl mb-16 max-w-2xl mx-auto tracking-wider"
         >
-          Transform your business ideas into reality with 
-          <span className="text-[#00aaff]"> AI-powered </span> 
-          market analysis and feasibility assessment
+          Turn your business ideas into 
+          <span className="text-[#00aaff]"> ready-to-launch </span> 
+          ventures with our complete toolkit
         </motion.p>
         
         <motion.div

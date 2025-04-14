@@ -15,8 +15,8 @@ const audiowide = Audiowide({
 });
 
 export const metadata: Metadata = {
-  title: "Venturly | Your Business Idea Advisor",
-  description: "AI-powered business analysis and validation for entrepreneurs",
+  title: "Venturly | Your Business Creation Platform",
+  description: "AI-powered toolkit to create and launch your business - from branding to store setup",
   icons: {
     icon: [
       { url: '/logo.png' }

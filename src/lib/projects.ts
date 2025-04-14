@@ -380,4 +380,50 @@ export async function addImageToConversation(
     console.error('Unexpected error in addImageToConversation:', err);
     return null;
   }
+}
+
+export async function deleteProject(projectId: string): Promise<boolean> {
+  const supabase = createClient();
+
+  try {
+    console.log('Deleting project with ID:', projectId);
+    
+    // First, delete all associated conversations
+    const { error: conversationsError } = await supabase
+      .from('conversations')
+      .delete()
+      .eq('project_id', projectId);
+
+    if (conversationsError) {
+      console.error('Error deleting project conversations:', {
+        message: conversationsError.message,
+        details: conversationsError.details,
+        hint: conversationsError.hint,
+        code: conversationsError.code
+      });
+      return false;
+    }
+    
+    // Then delete the project itself
+    const { error: projectError } = await supabase
+      .from('projects')
+      .delete()
+      .eq('id', projectId);
+
+    if (projectError) {
+      console.error('Error deleting project:', {
+        message: projectError.message,
+        details: projectError.details,
+        hint: projectError.hint,
+        code: projectError.code
+      });
+      return false;
+    }
+
+    console.log('Project and associated conversations deleted successfully');
+    return true;
+  } catch (err) {
+    console.error('Unexpected error in deleteProject:', err);
+    return false;
+  }
 } 

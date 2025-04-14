@@ -216,7 +216,7 @@ export default function DashboardContent({ projectId }: DashboardContentProps) {
   };
 
   const showImagePromptDialog = () => {
-    const prompt = window.prompt("Enter a detailed prompt for image generation (e.g., 'A professional logo for a tech startup with blue and green colors'):");
+    const prompt = window.prompt("Enter a description of the logo or product image you want to generate (e.g., 'Professional logo for a coffee shop with green and brown colors'):");
     if (prompt && prompt.trim()) {
       handleGenerateImage(prompt.trim());
     }
@@ -383,8 +383,8 @@ export default function DashboardContent({ projectId }: DashboardContentProps) {
                       </div>
                       <p className="mt-2">
                         {conversations.length === 0
-                          ? "Hello! I'm here to help validate your business idea and provide strategic advice. What would you like to discuss?"
-                          : "You've started a new conversation. Type your message below to begin."}
+                          ? "Hello! I'm here to help create your business from scratch. Describe your idea, and I'll provide business names, logo concepts, website designs, and everything you need to launch!"
+                          : "You've started a new conversation. Tell me about your business idea, and I'll help make it a reality!"}
                       </p>
                     </div>
                   )}
@@ -399,12 +399,12 @@ export default function DashboardContent({ projectId }: DashboardContentProps) {
                         onClick={showImagePromptDialog}
                         disabled={isLoading || !selectedConversation}
                         className="px-3 py-1.5 text-sm rounded bg-purple-600/20 text-purple-400 border border-purple-800 hover:bg-purple-600/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
-                        title="Generate an image (requires an active conversation)"
+                        title="Generate a logo or product image for your business (requires an active conversation)"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                           <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                         </svg>
-                        Generate Image
+                        Generate Logo
                       </button>
                       {isGeneratingImage && message.trim().startsWith('/image') && (
                         <span className="text-xs text-gray-400">Generating image...</span>
@@ -414,10 +414,10 @@ export default function DashboardContent({ projectId }: DashboardContentProps) {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder={selectedConversation 
-                        ? "Continue this conversation or type '/image your detailed prompt' to generate an image..." 
+                        ? "Continue this conversation or type '/image logo for my business' to generate a logo..." 
                         : conversations.length === 0 
-                          ? "Type to start your first conversation..." 
-                          : "Type to begin your new conversation..."}
+                          ? "Describe your business idea to start creating..." 
+                          : "Tell me about your business idea to begin..."}
                       rows={3}
                       disabled={isLoading}
                       className="w-full px-4 py-3 bg-black/30 border border-gray-800 rounded-lg focus:border-[#00aaff] focus:ring-1 focus:ring-[#00aaff] outline-none resize-none disabled:opacity-50"

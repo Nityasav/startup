@@ -35,10 +35,10 @@ export default function About() {
           >
             <h2 className="text-2xl md:text-3xl mb-6 font-audiowide">Our <GradientText>Vision</GradientText></h2>
             <p className="mb-4 text-gray-300">
-              Founded in 2023, Venturly emerged from a simple yet powerful observation: too many brilliant business ideas fail due to preventable factors. Our AI-powered platform was built to democratize market research and business validation, giving entrepreneurs the insights they need to succeed.
+              Founded in 2023, Venturly emerged from a simple yet powerful observation: too many brilliant business ideas never make it to market due to the complexity of launching. Our AI-powered platform was built to democratize business creation, giving entrepreneurs everything they need to turn concepts into reality.
             </p>
             <p className="text-gray-300">
-              We envision a future where innovation thrives, unburdened by the traditional barriers of market entry. By providing accurate, data-driven insights, we aim to increase the success rate of startups worldwide, fostering a more dynamic global economy.
+              We envision a future where innovation thrives, unburdened by the traditional barriers of business creation. By providing ready-to-use tools, assets, and guidance, we aim to increase the launch rate of new businesses worldwide, fostering a more dynamic global economy.
             </p>
           </motion.section>
 
@@ -54,19 +54,19 @@ export default function About() {
                 name="Alex Chen" 
                 role="Founder & CEO" 
                 delay={0.7}
-                description="Former Silicon Valley executive with 12+ years experience in tech startups."
+                description="E-commerce expert with 12+ years experience launching successful Shopify stores."
               />
               <TeamMember 
                 name="Mira Patel" 
                 role="CTO" 
                 delay={0.8}
-                description="AI researcher and engineer with a background in predictive analytics and machine learning."
+                description="AI researcher with expertise in generative design and business automation systems."
               />
               <TeamMember 
                 name="James Wilson" 
-                role="Head of Research" 
+                role="Head of Product" 
                 delay={0.9}
-                description="Economics PhD with expertise in market analysis and consumer behavior."
+                description="Former Shopify Partner with extensive experience in e-commerce platform development."
               />
             </div>
           </motion.section>
@@ -80,23 +80,23 @@ export default function About() {
             <h2 className="text-2xl md:text-3xl mb-6 font-audiowide">Our <GradientText>Values</GradientText></h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <Value 
-                title="Data Integrity" 
-                description="We believe in the power of unbiased, accurate information. Our analyses are built on verified data sources and transparent methodologies."
+                title="Creation Over Validation" 
+                description="We don't just tell you if your idea will work—we give you everything you need to make it work, from branding to website creation."
                 delay={0.9}
               />
               <Value 
                 title="Ethical Innovation" 
-                description="We're committed to developing AI that serves humanity's best interests, with privacy and fairness built into our core systems."
+                description="We're committed to developing AI that serves entrepreneurs' best interests, with practical tools that drive real business success."
                 delay={1.0}
               />
               <Value 
                 title="Accessibility" 
-                description="Great insights shouldn't be limited to those with deep pockets. We make professional-grade market analysis available to all entrepreneurs."
+                description="Launching a business shouldn't require extensive technical knowledge or huge budgets. We make professional-grade business creation available to all entrepreneurs."
                 delay={1.1}
               />
               <Value 
-                title="Continuous Learning" 
-                description="In rapidly evolving markets, standing still means falling behind. Our systems continuously learn and adapt to provide cutting-edge insights."
+                title="End-to-End Solutions" 
+                description="We believe in providing complete solutions, not just pieces of the puzzle. Our platform handles everything from naming to store creation."
                 delay={1.2}
               />
             </div>

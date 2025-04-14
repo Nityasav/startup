@@ -84,14 +84,14 @@ export default function NewProject() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="w-full px-4 py-2 rounded-lg bg-black/30 border border-gray-800 focus:border-[#00aaff] focus:ring-1 focus:ring-[#00aaff] outline-none transition-all"
-                placeholder="E.g., Coffee Shop Business"
+                placeholder="E.g., My Coffee Shop Business"
                 required
               />
             </div>
 
             <div>
               <label htmlFor="projectDescription" className="block mb-2 text-sm font-medium text-gray-200">
-                Brief Description
+                Business Idea Description
               </label>
               <textarea
                 id="projectDescription"
@@ -99,14 +99,14 @@ export default function NewProject() {
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={4}
                 className="w-full px-4 py-2 rounded-lg bg-black/30 border border-gray-800 focus:border-[#00aaff] focus:ring-1 focus:ring-[#00aaff] outline-none transition-all"
-                placeholder="Describe your business idea briefly..."
+                placeholder="Describe your business idea in detail so we can help create it for you..."
                 required
               ></textarea>
             </div>
 
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-200">
-                Project Type
+                Business Type
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div
@@ -118,7 +118,7 @@ export default function NewProject() {
                   }`}
                 >
                   <h3 className="font-medium mb-1">New Business</h3>
-                  <p className="text-gray-400 text-sm">Start from scratch with a new business idea</p>
+                  <p className="text-gray-400 text-sm">Create a complete toolkit for a new business idea</p>
                 </div>
                 <div
                   onClick={() => setFormData({ ...formData, projectType: 'existing' })}
@@ -129,7 +129,7 @@ export default function NewProject() {
                   }`}
                 >
                   <h3 className="font-medium mb-1">Existing Business</h3>
-                  <p className="text-gray-400 text-sm">Analyze and improve your current business</p>
+                  <p className="text-gray-400 text-sm">Enhance and improve your current business</p>
                 </div>
               </div>
             </div>

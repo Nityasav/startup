@@ -32,34 +32,34 @@ export default function Services() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl max-w-2xl mx-auto text-gray-300 mb-12"
           >
-            We leverage advanced AI to transform your business concepts into 
-            data-backed strategies with actionable insights.
+            We transform your business ideas into ready-to-launch 
+            ventures with our complete creation toolkit
           </motion.p>
         </motion.div>
         
         <div className="space-y-16">
           <Service 
             number="01"
-            title="Idea Validation" 
-            description="Our AI evaluates your business concept against current market conditions, identifying strengths, weaknesses, and unique value propositions. We analyze thousands of similar ventures to predict viability and suggest improvements."
+            title="Business Identity Creation" 
+            description="Our AI creates a complete brand identity for your business concept. We generate memorable business names, logo concepts, and brand guidelines that perfectly capture your vision and resonate with your target market."
             features={[
-              "Competitive landscape analysis",
-              "Market saturation assessment",
-              "Unique selling proposition evaluation",
-              "Target demographic identification"
+              "Concise, meaningful business name options",
+              "Custom logo concept generation",
+              "Brand color palette and typography",
+              "Brand voice and messaging guidelines"
             ]}
             delay={0.5}
           />
           
           <Service 
             number="02"
-            title="Market Analysis" 
-            description="Gain deep insights into your target market with our comprehensive analysis tools. We identify market size, growth potential, entry barriers, and hidden opportunities that could give your startup the edge it needs."
+            title="Website & Store Creation" 
+            description="Launch your online presence immediately with our website and e-commerce store creation tools. We design and build Shopify stores and other web platforms tailored to your specific business needs."
             features={[
-              "Total addressable market calculation",
-              "Growth trend forecasting",
-              "Regional market variation insights",
-              "Consumer behavior pattern analysis"
+              "Custom Shopify store design",
+              "Responsive website mockups and layouts",
+              "Product page optimization",
+              "Ready-to-use code and templates"
             ]}
             delay={0.7}
             reversed
@@ -67,26 +67,26 @@ export default function Services() {
           
           <Service 
             number="03"
-            title="Financial Projections" 
-            description="Translate your business model into realistic financial forecasts. Our AI generates detailed revenue projections, expense estimates, and cash flow scenarios based on industry benchmarks and comparable business data."
+            title="Launch Strategy & Tools" 
+            description="Get everything you need to launch your business with confidence. Our platform provides a comprehensive toolkit with actionable steps to take your idea from concept to market in record time."
             features={[
-              "5-year financial forecast modeling",
-              "Break-even analysis",
-              "Capital requirement estimation",
-              "Scenario planning with variable inputs"
+              "Domain and hosting recommendations",
+              "Payment processing setup",
+              "Launch checklist and timeline",
+              "Marketing launch strategy"
             ]}
             delay={0.9}
           />
           
           <Service 
             number="04"
-            title="Strategic Recommendations" 
-            description="Receive actionable strategies tailored to your specific venture. Our platform doesn't just identify challenges—it suggests concrete solutions backed by data and success patterns from similar businesses."
+            title="E-commerce Optimization" 
+            description="Maximize your online store's performance with our Shopify-focused optimization tools. We help you set up your product catalog, optimize for conversions, and implement the right apps to grow your business."
             features={[
-              "Go-to-market strategy optimization",
-              "Pricing model recommendations",
-              "Risk mitigation planning",
-              "Growth acceleration tactics"
+              "Product catalog structure",
+              "Conversion rate optimization",
+              "Essential Shopify app recommendations",
+              "Customer journey optimization"
             ]}
             delay={1.1}
             reversed

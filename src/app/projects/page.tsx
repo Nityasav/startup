@@ -1,17 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
-import { Project, getUserProjects } from '@/lib/projects';
+import { Project, getUserProjects, deleteProject } from '@/lib/projects';
 
 export default function Projects() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -39,6 +42,54 @@ export default function Projects() {
       loadProjects();
     }
   }, [user, router, authLoading]);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpenId(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const toggleMenu = (projectId: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent triggering the project navigation
+    setMenuOpenId(menuOpenId === projectId ? null : projectId);
+  };
+
+  const handleDeleteProject = async (projectId: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent navigation to project page
+    
+    if (isDeleting) return;
+    
+    // Ask for confirmation
+    const confirmed = window.confirm("Are you sure you want to delete this project and all its conversations? This action cannot be undone.");
+    if (!confirmed) return;
+    
+    setIsDeleting(true);
+    setError(null);
+    
+    try {
+      const success = await deleteProject(projectId);
+      if (success) {
+        // Remove the deleted project from state
+        setProjects(projects.filter(p => p.id !== projectId));
+        setMenuOpenId(null); // Close any open menu
+      } else {
+        throw new Error('Failed to delete project');
+      }
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      setError('Failed to delete project. Please try again.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   // Show loading state during authentication or project loading
   if (authLoading || (!user && isLoading)) {
@@ -110,17 +161,24 @@ export default function Projects() {
         >
           {isLoading ? (
             // Loading skeleton
-            <div className="bg-black/30 backdrop-blur-sm border border-gray-800 rounded-lg p-6 animate-pulse">
-              <div className="h-6 w-2/3 bg-gray-700 rounded mb-4"></div>
-              <div className="h-4 w-full bg-gray-700 rounded"></div>
-            </div>
+            Array(3).fill(0).map((_, i) => (
+              <div key={i} className="bg-black/30 backdrop-blur-sm border border-gray-800 rounded-lg p-6 animate-pulse">
+                <div className="h-6 w-2/3 bg-gray-700 rounded mb-4"></div>
+                <div className="h-4 w-full bg-gray-700 rounded mb-2"></div>
+                <div className="h-4 w-4/5 bg-gray-700 rounded mb-6"></div>
+                <div className="flex justify-between">
+                  <div className="h-4 w-1/4 bg-gray-700 rounded"></div>
+                  <div className="h-4 w-1/4 bg-gray-700 rounded"></div>
+                </div>
+              </div>
+            ))
           ) : projects.length > 0 ? (
             // Project cards
             projects.map((project) => (
               <motion.div
                 key={project.id}
                 whileHover={{ scale: 1.02 }}
-                className="bg-black/30 backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-[#00aaff]/50 transition-all duration-300 cursor-pointer"
+                className="bg-black/30 relative backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-[#00aaff]/50 transition-all duration-300 cursor-pointer group"
                 onClick={() => router.push(`/projects/${project.id}`)}
               >
                 <h3 className="text-xl font-semibold mb-2 text-[#00aaff]">{project.name}</h3>
@@ -133,6 +191,48 @@ export default function Projects() {
                     {project.project_type}
                   </span>
                 </div>
+                
+                {/* Three-dot menu button */}
+                <button
+                  onClick={(e) => toggleMenu(project.id, e)}
+                  className="absolute top-4 right-4 p-1 rounded-full opacity-0 group-hover:opacity-100 hover:bg-gray-800 transition-opacity"
+                  disabled={isDeleting}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                  </svg>
+                </button>
+                
+                {/* Dropdown menu */}
+                {menuOpenId === project.id && (
+                  <div 
+                    ref={menuRef}
+                    className="absolute right-4 top-10 z-10 w-40 rounded-md bg-gray-900 shadow-lg border border-gray-700"
+                    onClick={(e) => e.stopPropagation()} // Prevent card click when clicking on menu
+                  >
+                    <div className="py-1">
+                      <button
+                        onClick={(e) => handleDeleteProject(project.id, e)}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-gray-800 transition-colors flex items-center"
+                        disabled={isDeleting}
+                      >
+                        {isDeleting ? (
+                          <>
+                            <div className="h-4 w-4 border-2 border-red-400 border-t-transparent rounded-full animate-spin mr-2"></div>
+                            Deleting...
+                          </>
+                        ) : (
+                          <>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-red-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                            Delete Project
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                )}
               </motion.div>
             ))
           ) : (
