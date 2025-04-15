@@ -4,9 +4,9 @@ import { logAuthHeaderDetails } from '@/lib/supabase/debug';
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const projectId = params.id;
+  const projectId = context.params.id;
   
   try {
     // Check for auth in different possible headers
