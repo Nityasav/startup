@@ -105,6 +105,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
+    // eslint-disable-next-line react/no-unescaped-entities
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
