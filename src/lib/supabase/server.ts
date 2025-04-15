@@ -34,27 +34,10 @@ export function createServerClient(request?: Request) {
       const cookieStore = cookies();
       options.global.headers.cookie = cookieStore.toString();
     } catch (error) {
+      console.error('Error accessing cookies:', error);
       // Continue without cookies
     }
   }
 
   return createSupabaseClient(supabaseUrl, supabaseAnonKey, options);
-}
-
-// Fallback for non-server contexts
-function createBasicClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  
-  if (!supabaseUrl || !supabaseAnonKey) {
-    console.error('Supabase credentials are missing');
-    throw new Error('Supabase credentials are missing');
-  }
-
-  return createSupabaseClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-  });
 } 

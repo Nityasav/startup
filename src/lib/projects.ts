@@ -486,7 +486,7 @@ export async function deleteProject(projectId: string): Promise<boolean> {
     }
     
     // If we reached here, the deletion might have worked, do a final check
-    const { data: finalCheck, error: finalCheckError } = await supabase
+    const { error: finalCheckError } = await supabase
       .from('projects')
       .select('id')
       .eq('id', projectId)

@@ -14,7 +14,7 @@ export const createUser = async (email: string, password: string) => {
 };
 
 // Sign in a user
-export const signInUser = async (email: string, password: string, remember: boolean = true) => {
+export const signInUser = async (email: string, password: string) => {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,

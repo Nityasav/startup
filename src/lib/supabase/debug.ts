@@ -1,23 +1,35 @@
 // Utility functions for debugging Supabase authentication issues
 
-export function logSessionDetails(session: any) {
+export function logSessionDetails(session: unknown) {
   if (!session) {
     console.log('DEBUG: No session found');
     return;
   }
   
   try {
+    const sessionObj = session as {
+      access_token?: string;
+      refresh_token?: string;
+      expires_at?: number;
+      provider?: string;
+      user?: {
+        id?: string;
+        email?: string;
+        session?: unknown;
+      };
+    };
+    
     const safeSession = {
-      hasAccessToken: !!session.access_token,
-      accessTokenLength: session.access_token ? session.access_token.length : 0,
-      hasRefreshToken: !!session.refresh_token,
-      refreshTokenLength: session.refresh_token ? session.refresh_token.length : 0,
-      expiresAt: session.expires_at,
-      provider: session.provider,
-      user: session.user ? {
-        id: session.user.id,
-        email: session.user.email,
-        hasSession: !!session.user.session,
+      hasAccessToken: !!sessionObj.access_token,
+      accessTokenLength: sessionObj.access_token ? sessionObj.access_token.length : 0,
+      hasRefreshToken: !!sessionObj.refresh_token,
+      refreshTokenLength: sessionObj.refresh_token ? sessionObj.refresh_token.length : 0,
+      expiresAt: sessionObj.expires_at,
+      provider: sessionObj.provider,
+      user: sessionObj.user ? {
+        id: sessionObj.user.id,
+        email: sessionObj.user.email,
+        hasSession: !!sessionObj.user.session,
       } : null
     };
     

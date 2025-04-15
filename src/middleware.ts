@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 
 // This middleware ensures that all API routes receive proper authentication headers
 
@@ -21,8 +20,6 @@ export async function middleware(request: NextRequest) {
   // Get auth cookie
   const authCookie = request.cookies.get('sb-access-token')?.value;
   const refreshCookie = request.cookies.get('sb-refresh-token')?.value;
-  
-  const response = NextResponse.next();
   
   // Log cookies for debugging
   if (process.env.NODE_ENV === 'development') {
