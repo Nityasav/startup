@@ -20,6 +20,8 @@ export default function SignupPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -35,17 +37,17 @@ export default function SignupPage() {
 
     try {
       // Call the Supabase signup function
-      const { data, error } = await createUser(formData.email, formData.password);
+      const { error } = await createUser(formData.email, formData.password);
       
       if (error) {
         setError(error.message);
         return;
       }
       
-      // If successful, refresh the user context and navigate to dashboard
-      await refreshUser();
-      router.push('/dashboard');
-    } catch (err) {
+      // Redirect to the verification page
+      setSuccess(true);
+      setVerificationEmail(formData.email);
+    } catch (err: unknown) {
       console.error('Error during signup:', err);
       setError('An unexpected error occurred. Please try again.');
     } finally {

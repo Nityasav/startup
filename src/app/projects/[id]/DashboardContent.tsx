@@ -5,13 +5,15 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
-import { Project, Conversation, Message, createConversation, getProjectConversations, updateConversation, deleteConversation, generateImage, addImageToConversation } from '@/lib/projects';
+import { Conversation, Message, createConversation, getProjectConversations, updateConversation, deleteConversation, generateImage, addImageToConversation } from '@/lib/projects';
+import { useMediaQuery } from 'react-responsive';
 
 interface DashboardContentProps {
   projectId: string;
+  projectName: string;
 }
 
-export default function DashboardContent({ projectId }: DashboardContentProps) {
+export default function DashboardContent({ projectId, projectName }: DashboardContentProps) {
   const { user } = useAuth();
   const router = useRouter();
   const [message, setMessage] = useState('');

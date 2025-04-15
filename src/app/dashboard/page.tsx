@@ -115,7 +115,7 @@ export default function Dashboard() {
             </h2>
             
             <div className="text-center p-8">
-              <p className="text-gray-400 mb-4">You don't have any projects yet.</p>
+              <p className="text-gray-400 mb-4">You don&apos;t have any projects yet.</p>
               <Link href="/projects">
                 <motion.button 
                   className="bg-gradient-to-r from-[#00aaff] to-[#ff00aa] hover:from-[#3cc0ff] hover:to-[#ff3caa] text-white font-medium py-2 px-4 rounded-md transition-all duration-300"

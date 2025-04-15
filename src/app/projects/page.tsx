@@ -15,6 +15,8 @@ export default function Projects() {
   const [error, setError] = useState<string | null>(null);
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [feedbackType, setFeedbackType] = useState<'success' | 'error'>('success');
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -62,30 +64,65 @@ export default function Projects() {
     setMenuOpenId(menuOpenId === projectId ? null : projectId);
   };
 
-  const handleDeleteProject = async (projectId: string, e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent navigation to project page
+  const handleDeleteProject = async (projectId: string, e?: React.MouseEvent) => {
+    // Prevent event propagation if event is provided
+    if (e) {
+      e.stopPropagation(); // Prevent navigation to project page
+    }
     
     if (isDeleting) return;
     
     // Ask for confirmation
-    const confirmed = window.confirm("Are you sure you want to delete this project and all its conversations? This action cannot be undone.");
+    const confirmed = window.confirm('Are you sure you want to delete this project and all its conversations? This action cannot be undone.');
     if (!confirmed) return;
     
     setIsDeleting(true);
+    setMenuOpenId(null); // Close menu immediately
     setError(null);
     
     try {
+      console.log('Attempting to delete project:', projectId);
       const success = await deleteProject(projectId);
+      
       if (success) {
-        // Remove the deleted project from state
-        setProjects(projects.filter(p => p.id !== projectId));
-        setMenuOpenId(null); // Close any open menu
+        console.log('Project deleted successfully');
+        
+        // Immediately verify the deletion by refetching projects
+        if (user) {
+          console.log('Verifying deletion by refetching projects');
+          const refreshedProjects = await getUserProjects(user.id);
+          // Update the state with the fresh data from the server
+          setProjects(refreshedProjects);
+          
+          if (refreshedProjects.some(p => p.id === projectId)) {
+            console.error('Project still exists in database after deletion');
+            setError('Project appears to be deleted but may reappear. Supabase RLS policies may need to be checked.');
+          } else {
+            console.log('Project confirmed deleted from database');
+            setFeedbackMessage('Project deleted successfully');
+            setFeedbackType('success');
+            setTimeout(() => setFeedbackMessage(''), 3000);
+          }
+        }
       } else {
-        throw new Error('Failed to delete project');
+        console.error('Failed to delete project');
+        setError('Failed to delete project. This could be due to Supabase Row Level Security (RLS) policies.');
+        
+        // Refresh projects to ensure UI state matches database
+        if (user) {
+          const refreshedProjects = await getUserProjects(user.id);
+          setProjects(refreshedProjects);
+        }
       }
     } catch (error) {
       console.error('Error deleting project:', error);
-      setError('Failed to delete project. Please try again.');
+      setError('An unexpected error occurred. Please try again.');
+      
+      // Refresh projects to ensure UI state matches database
+      if (user) {
+        const refreshedProjects = await getUserProjects(user.id);
+        setProjects(refreshedProjects);
+      }
     } finally {
       setIsDeleting(false);
     }
@@ -127,6 +164,11 @@ export default function Projects() {
           {error && (
             <div className="mt-4 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400">
               {error}
+            </div>
+          )}
+          {feedbackMessage && (
+            <div className={`mt-4 p-4 ${feedbackType === 'success' ? 'bg-green-500/10 border border-green-500/50 text-green-400' : 'bg-red-500/10 border border-red-500/50 text-red-400'} rounded-lg`}>
+              {feedbackMessage}
             </div>
           )}
         </motion.div>

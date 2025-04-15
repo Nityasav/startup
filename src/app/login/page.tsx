@@ -45,10 +45,10 @@ export default function LoginPage() {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
-
+    
     try {
       // Call the Supabase signin function with remember option
-      const { data, error } = await signInUser(formData.email, formData.password, formData.remember);
+      const { error } = await signInUser(formData.email, formData.password, formData.remember);
       
       if (error) {
         setError(error.message);
@@ -185,7 +185,7 @@ export default function LoginPage() {
           transition={{ delay: stagger * 6, duration: 0.5 }}
         >
           <p className="text-gray-400">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/signup" className="text-[#0055ff] hover:underline">
               Sign up
             </Link>
