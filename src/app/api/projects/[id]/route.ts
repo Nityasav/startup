@@ -1,12 +1,18 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
 import { logAuthHeaderDetails } from '@/lib/supabase/debug';
 
+type RouteParams = {
+  params: {
+    id: string;
+  };
+};
+
 export async function DELETE(
-  request: Request,
-  context: { params: { id: string } }
-) {
-  const projectId = context.params.id;
+  request: NextRequest,
+  { params }: RouteParams
+): Promise<NextResponse> {
+  const projectId = params.id;
   
   try {
     // Check for auth in different possible headers
@@ -32,7 +38,7 @@ export async function DELETE(
       return NextResponse.json(
         { error: 'Authentication failed: No valid token provided' },
         { status: 401 }
-      );
+      ) as NextResponse;
     }
     
     // Initialize Supabase client
@@ -51,7 +57,7 @@ export async function DELETE(
       return NextResponse.json(
         { error: 'Authentication failed: ' + authError.message },
         { status: 401 }
-      );
+      ) as NextResponse;
     }
     
     if (!authData?.user) {
@@ -59,7 +65,7 @@ export async function DELETE(
       return NextResponse.json(
         { error: 'Authentication failed: No user found in session' },
         { status: 401 }
-      );
+      ) as NextResponse;
     }
     
     console.log('API route: Authenticated user:', authData.user.id);
@@ -76,7 +82,7 @@ export async function DELETE(
       return NextResponse.json(
         { error: 'Project not found' },
         { status: 404 }
-      );
+      ) as NextResponse;
     }
 
     if (projectData.user_id !== authData.user.id) {
@@ -88,7 +94,7 @@ export async function DELETE(
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 403 }
-      );
+      ) as NextResponse;
     }
 
     // Delete conversations first
@@ -114,19 +120,19 @@ export async function DELETE(
       return NextResponse.json(
         { error: 'Failed to delete project: ' + deleteError.message },
         { status: 500 }
-      );
+      ) as NextResponse;
     }
 
     console.log('API route: Project deleted successfully:', deleteData);
     return NextResponse.json(
       { success: true, deleted: deleteData },
       { status: 200 }
-    );
+    ) as NextResponse;
   } catch (error) {
     console.error('Unexpected error in project deletion:', error);
     return NextResponse.json(
       { error: 'Server error' },
       { status: 500 }
-    );
+    ) as NextResponse;
   }
 } 
