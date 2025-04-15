@@ -5,13 +5,9 @@ import { motion } from "framer-motion";
 import GradientText from "../components/GradientText";
 import { useState } from "react";
 import { createUser } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext";
 
 export default function SignupPage() {
   const stagger = 0.1;
-  const router = useRouter();
-  const { refreshUser } = useAuth();
   
   const [formData, setFormData] = useState({
     name: '',
@@ -44,7 +40,7 @@ export default function SignupPage() {
         return;
       }
       
-      // Redirect to the verification page
+      // Show success message
       setSuccess(true);
       setVerificationEmail(formData.email);
     } catch (err: unknown) {
@@ -80,6 +76,17 @@ export default function SignupPage() {
             animate={{ opacity: 1, y: 0 }}
           >
             {error}
+          </motion.div>
+        )}
+        
+        {success && (
+          <motion.div 
+            className="bg-green-900/40 border border-green-500 text-green-200 px-4 py-3 rounded mb-4"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <p className="font-medium">Account created successfully!</p>
+            <p className="text-sm mt-1">Please check {verificationEmail} for verification instructions.</p>
           </motion.div>
         )}
         

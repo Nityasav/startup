@@ -27,10 +27,10 @@ export async function POST(req: Request) {
       url: response.data[0].url,
       revisedPrompt: response.data[0].revised_prompt 
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error generating image:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to generate image' },
+      { error: error instanceof Error ? error.message : 'Unknown error occurred' },
       { status: 500 }
     );
   }

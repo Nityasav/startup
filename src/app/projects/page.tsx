@@ -282,7 +282,7 @@ export default function Projects() {
             <div className="bg-black/30 backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-[#00aaff]/50 transition-all duration-300">
               <h3 className="text-xl font-semibold mb-2 text-[#00aaff]">Your First Project</h3>
               <p className="text-gray-400">
-                Start your journey by clicking the "Start New Project" button above.
+                Start your journey by clicking the &quot;Start New Project&quot; button above.
               </p>
             </div>
           )}

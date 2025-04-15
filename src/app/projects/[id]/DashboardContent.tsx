@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { Conversation, Message, createConversation, getProjectConversations, updateConversation, deleteConversation, generateImage, addImageToConversation } from '@/lib/projects';
-import { useMediaQuery } from 'react-responsive';
 
 interface DashboardContentProps {
   projectId: string;
@@ -25,6 +24,13 @@ export default function DashboardContent({ projectId, projectName }: DashboardCo
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+
+  // Add title with project name
+  useEffect(() => {
+    if (projectName) {
+      document.title = `${projectName} - Project Dashboard`;
+    }
+  }, [projectName]);
 
   const loadConversations = useCallback(async () => {
     if (!projectId || !user) return;
