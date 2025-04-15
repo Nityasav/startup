@@ -51,7 +51,7 @@ const Header = () => {
             </div>
             <div className="flex flex-col">
               <span className="cyber-title text-sm md:text-base" data-text="VENTURLY">VENTURLY</span>
-              <span className="text-xs text-gray-400 hidden md:inline-block">Business Creation Toolkit</span>
+              <span className="text-xs text-gray-400 hidden md:inline-block">A Business that starts Businesses</span>
             </div>
           </Link>
           
