@@ -145,7 +145,7 @@ export default function Contact() {
                     </svg>
                   </div>
                   <h3 className="text-2xl font-bold mb-2">Message Sent!</h3>
-                  <p className="text-gray-300">Thank you for reaching out. We'll get back to you shortly.</p>
+                  <p className="text-gray-300">Thank you for reaching out. We&apos;ll get back to you shortly.</p>
                   <button 
                     onClick={() => setFormStatus('idle')}
                     className="mt-6 text-[#00aaff] hover:text-[#3cc0ff] transition-colors"
