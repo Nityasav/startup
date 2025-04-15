@@ -2,8 +2,11 @@ import { NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
 import { logAuthHeaderDetails } from '@/lib/supabase/debug';
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-  const projectId = params.id;
+export async function DELETE(request: Request) {
+  // Extract the project ID from the URL path
+  const url = new URL(request.url);
+  const pathParts = url.pathname.split('/');
+  const projectId = pathParts[pathParts.length - 1];
   
   try {
     // Check for auth in different possible headers
