@@ -9,7 +9,7 @@ type Props = {
   searchParams: Record<string, string | string[] | undefined>;
 };
 
-export default async function ProjectDashboard({ params, searchParams }: Props) {
+export default async function ProjectDashboard({ params }: Props) {
   const projectId = params.id;
   const project = await getProject(projectId);
   const projectName = project?.name || 'Project Dashboard';
