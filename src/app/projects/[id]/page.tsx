@@ -2,15 +2,14 @@ import { Suspense } from 'react';
 import DashboardContent from './DashboardContent';
 import { getProject } from '@/lib/projects';
 
-type Props = {
-  params: {
-    id: string;
-  };
-  searchParams: Record<string, string | string[] | undefined>;
-};
+interface PageProps {
+  params: Promise<{id: string}>;
+  searchParams?: Record<string, string | string[] | undefined>;
+}
 
-export default async function ProjectDashboard({ params }: Props) {
-  const projectId = params.id;
+export default async function ProjectDashboard({ params }: PageProps) {
+  const resolvedParams = await params;
+  const projectId = resolvedParams.id;
   const project = await getProject(projectId);
   const projectName = project?.name || 'Project Dashboard';
   
