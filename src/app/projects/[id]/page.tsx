@@ -1,8 +1,22 @@
-import { use } from 'react';
+import { Suspense } from 'react';
 import DashboardContent from './DashboardContent';
+import { getProject } from '@/lib/projects';
 
-export default function ProjectDashboard({ params }: { params: { id: string } }) {
-  const projectId = use(Promise.resolve(params.id));
+type Props = {
+  params: {
+    id: string;
+  };
+  searchParams: Record<string, string | string[] | undefined>;
+};
+
+export default async function ProjectDashboard({ params, searchParams }: Props) {
+  const projectId = params.id;
+  const project = await getProject(projectId);
+  const projectName = project?.name || 'Project Dashboard';
   
-  return <DashboardContent projectId={projectId} />;
+  return (
+    <Suspense fallback={<div>Loading project...</div>}>
+      <DashboardContent projectId={projectId} projectName={projectName} />
+    </Suspense>
+  );
 } 

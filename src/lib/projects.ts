@@ -504,4 +504,32 @@ export async function deleteProject(projectId: string): Promise<boolean> {
     console.error('Unexpected error in deleteProject:', err);
     return false;
   }
+}
+
+export async function getProject(projectId: string): Promise<Project | null> {
+  const supabase = createClient();
+  console.log('Fetching project by ID:', projectId);
+
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .eq('id', projectId)
+      .single();
+
+    if (error) {
+      console.error('Error fetching project:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint
+      });
+      return null;
+    }
+
+    console.log('Project fetched successfully:', data || 'No project found');
+    return data as Project;
+  } catch (err) {
+    console.error('Unexpected error in getProject:', err);
+    return null;
+  }
 } 
