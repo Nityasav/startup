@@ -4,7 +4,7 @@ import { getProject } from '@/lib/projects';
 
 interface PageProps {
   params: Promise<{id: string}>;
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export default async function ProjectDashboard({ params }: PageProps) {
