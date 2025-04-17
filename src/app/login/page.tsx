@@ -47,8 +47,8 @@ export default function LoginPage() {
     setError(null);
     
     try {
-      // Call the Supabase signin function with remember option
-      const { error } = await signInUser(formData.email, formData.password, formData.remember);
+      // Call the Supabase signin function with email and password
+      const { error } = await signInUser(formData.email, formData.password);
       
       if (error) {
         setError(error.message);
