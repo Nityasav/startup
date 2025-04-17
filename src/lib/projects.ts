@@ -56,7 +56,7 @@ export async function createProject(
     }
 
     console.log('Project created successfully:', data);
-    return data;
+    return data as Project;
   } catch (err) {
     console.error('Unexpected error in createProject:', err);
     return null;
@@ -84,7 +84,7 @@ export async function getUserProjects(userId: string): Promise<Project[]> {
     }
 
     console.log('Projects fetched successfully:', data?.length || 0, 'projects found');
-    return data || [];
+    return (data || []) as Project[];
   } catch (err) {
     console.error('Unexpected error in getUserProjects:', err);
     return [];
@@ -145,7 +145,7 @@ export async function createConversation(
             }
           ]
         })
-        .eq('id', conversation.id)
+        .eq('id', conversation.id as string)
         .select()
         .single();
 
@@ -180,7 +180,7 @@ export async function getProjectConversations(projectId: string): Promise<Conver
       return [];
     }
 
-    return data || [];
+    return (data || []) as Conversation[];
   } catch (err) {
     console.error('Unexpected error in getProjectConversations:', err);
     return [];
