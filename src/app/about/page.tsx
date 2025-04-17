@@ -35,11 +35,11 @@ export default function About() {
           >
             <h2 className="text-2xl md:text-3xl mb-6 font-audiowide">Our <GradientText>Vision</GradientText></h2>
             <p className="mb-4 text-gray-300">
-              Founded in 2023, Venturly emerged from a simple yet powerful observation: too many brilliant business ideas never make it to market due to the complexity of launching. Our AI-powered platform was built to democratize business creation, giving entrepreneurs everything they need to turn concepts into reality.
-            </p>
+              Did you ever have a great idea? Why not execute it and turn it into a busines? Venturly takes this one step further, and helps you execute it through the right actions of providing with the perfect business toolkit. 
+               </p>
             <p className="text-gray-300">
-              We envision a future where innovation thrives, unburdened by the traditional barriers of business creation. By providing ready-to-use tools, assets, and guidance, we aim to increase the launch rate of new businesses worldwide, fostering a more dynamic global economy.
-            </p>
+              Entrepreneurs need many assets to get the business to launch such as a website, business name, and logo. Venturly makes all the necessary items to higher your chance to become a successful business and help you develop into a full-edged business entreprise.  
+               </p>
           </motion.section>
 
           <motion.section
@@ -49,24 +49,12 @@ export default function About() {
             className="glass p-8 rounded-lg"
           >
             <h2 className="text-2xl md:text-3xl mb-6 font-audiowide">Our <GradientText>Team</GradientText></h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
               <TeamMember 
-                name="Alex Chen" 
+                name="Nitya Savaliya" 
                 role="Founder & CEO" 
                 delay={0.7}
-                description="E-commerce expert with 12+ years experience launching successful Shopify stores."
-              />
-              <TeamMember 
-                name="Mira Patel" 
-                role="CTO" 
-                delay={0.8}
-                description="AI researcher with expertise in generative design and business automation systems."
-              />
-              <TeamMember 
-                name="James Wilson" 
-                role="Head of Product" 
-                delay={0.9}
-                description="Former Shopify Partner with extensive experience in e-commerce platform development."
+                description="17 year old innovatoing creating multiple projects and exploring the industry of Technology and Y Combinator. "
               />
             </div>
           </motion.section>
@@ -91,7 +79,7 @@ export default function About() {
               />
               <Value 
                 title="Accessibility" 
-                description="Launching a business shouldn't require extensive technical knowledge or huge budgets. We make professional-grade business creation available to all entrepreneurs."
+                description="Launching a business is as easy as ever. The need to code your own website is negated through the new technology innovations everyday, and Ventury supports this action. "
                 delay={1.1}
               />
               <Value 
