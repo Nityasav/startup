@@ -1,12 +1,13 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
 
   // Add scroll event listener
   if (typeof window !== 'undefined') {
@@ -25,8 +26,20 @@ const Header = () => {
     { label: "How It Works", href: "#how-it-works" },
     { label: "Benefits", href: "#benefits" },
     { label: "Pricing", href: "#pricing" },
-    { label: "Dashboard Demo", href: "/dashboard-demo" }, // Added this link
+    { label: "Dashboard Demo", href: "/dashboard-demo" },
   ];
+
+  const handleNavigation = (href: string) => {
+    if (href.startsWith('#')) {
+      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate(href);
+    }
+  };
+
+  const handleDemoRequest = () => {
+    document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <header
@@ -38,12 +51,19 @@ const Header = () => {
       )}
     >
       <div className="container flex items-center justify-between">
-        <a href="#" className="flex items-center space-x-2">
-          <div className="bg-gradient-to-r from-orchestrai-600 to-accent-purple w-8 h-8 rounded-md flex items-center justify-center text-white font-bold">
-            O
+        <a 
+          href="#" 
+          className="flex items-center space-x-2"
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        >
+          <div className="bg-gradient-to-r from-venturly-600 to-accent-purple w-8 h-8 rounded-md flex items-center justify-center text-white font-bold">
+            V
           </div>
-          <span className="text-xl font-bold text-orchestrai-900">
-            OrchestrAI
+          <span className="text-xl font-bold text-venturly-900">
+            Venturly
           </span>
         </a>
 
@@ -54,14 +74,21 @@ const Header = () => {
               <li key={link.label}>
                 <a
                   href={link.href}
-                  className="font-medium text-slate-700 hover:text-orchestrai-600 transition-colors"
+                  className="font-medium text-slate-700 hover:text-venturly-600 transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavigation(link.href);
+                  }}
                 >
                   {link.label}
                 </a>
               </li>
             ))}
           </ul>
-          <Button className="bg-orchestrai-600 hover:bg-orchestrai-700">
+          <Button 
+            className="bg-venturly-600 hover:bg-venturly-700"
+            onClick={handleDemoRequest}
+          >
             Request Demo
           </Button>
         </nav>
@@ -81,11 +108,18 @@ const Header = () => {
                     key={link.label}
                     href={link.href}
                     className="py-2 px-4 text-lg font-medium hover:bg-muted rounded-md"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigation(link.href);
+                    }}
                   >
                     {link.label}
                   </a>
                 ))}
-                <Button className="mt-4 w-full bg-orchestrai-600 hover:bg-orchestrai-700">
+                <Button 
+                  className="mt-4 w-full bg-venturly-600 hover:bg-venturly-700"
+                  onClick={handleDemoRequest}
+                >
                   Request Demo
                 </Button>
               </div>

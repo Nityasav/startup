@@ -1,54 +1,64 @@
-
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { Activity } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <section className="relative pt-32 pb-24 overflow-hidden bg-grid-pattern">
-      {/* Background gradient effects */}
-      <div className="absolute inset-0 bg-gradient-radial from-orchestrai-100/30 to-transparent opacity-80"></div>
-      <div className="absolute top-20 left-1/4 w-96 h-96 bg-accent-purple/10 rounded-full blur-3xl"></div>
-      <div className="absolute top-40 right-1/4 w-64 h-64 bg-orchestrai-300/10 rounded-full blur-3xl"></div>
-      
-      <div className="container relative z-10">
-        <div className="text-center max-w-4xl mx-auto">
-          <div className="inline-block mb-4 px-4 py-1 bg-white/80 backdrop-blur-sm border border-orchestrai-100 rounded-full shadow-sm">
-            <span className="text-sm font-medium text-orchestrai-900">
-              AI Orchestration for Enterprise
+    <section className="py-20 bg-black text-white">
+      <div className="container">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 bg-blue-950/30 border border-blue-900/30 px-4 py-2 rounded-full mb-8">
+            <Activity className="h-4 w-4 text-blue-400" />
+            <span className="text-sm text-blue-400 font-medium">
+              Orchestrate AI workflows like never before
             </span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 gradient-text">
-            Orchestrate Multiple AI Agents into Seamless Workflows
+          
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+            Turn AI Agents Into Powerful <br /> Orchestrated Workflows
           </h1>
-          <p className="text-xl md:text-2xl text-slate-600 mb-10 max-w-3xl mx-auto">
-            Connect specialized AI agents across departments to create powerful, 
-            automated workflows while maintaining control, visibility, and governance.
+          
+          <p className="text-xl text-slate-300 mb-10">
+            Connect, automate, and manage AI agents across your organization
+            with our intuitive no-code orchestration platform. Unlock AI productivity
+            without the complexity.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-orchestrai-600 to-accent-purple hover:from-orchestrai-700 hover:to-violet-700 text-white shadow-lg button-glow"
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              to="/demo" 
+              className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-lg font-medium"
             >
-              Request Early Access <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-            <Button size="lg" variant="outline">
-              Watch Demo
-            </Button>
+              Try Demo Dashboard
+            </Link>
+            <Link 
+              to="#features" 
+              className="bg-transparent border border-blue-700 text-blue-400 hover:border-blue-500 hover:text-blue-300 px-8 py-3 rounded-lg font-medium"
+            >
+              Learn more
+            </Link>
+            <Link
+              to="/docs"
+              className="bg-transparent border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-zinc-300 px-8 py-3 rounded-lg font-medium"
+            >
+              Documentation
+            </Link>
           </div>
-
-          {/* Stats */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white/70 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-slate-100">
-              <div className="font-bold text-4xl text-orchestrai-800">15B+</div>
-              <div className="text-slate-600">Total Addressable Market</div>
-            </div>
-            <div className="bg-white/70 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-slate-100">
-              <div className="font-bold text-4xl text-orchestrai-800">70%</div>
-              <div className="text-slate-600">Reduce Manual AI Handoffs</div>
-            </div>
-            <div className="bg-white/70 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-slate-100">
-              <div className="font-bold text-4xl text-orchestrai-800">5x</div>
-              <div className="text-slate-600">ROI from AI Investments</div>
+          
+          <div className="mt-12 bg-black/30 border border-blue-900/20 rounded-xl p-6">
+            <p className="text-sm text-slate-400 mb-4">Trusted by leading AI-driven companies</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div className="flex justify-center">
+                <div className="h-8 w-32 bg-gradient-to-r from-blue-800 to-blue-600 rounded" />
+              </div>
+              <div className="flex justify-center">
+                <div className="h-8 w-32 bg-gradient-to-r from-blue-800 to-blue-600 rounded" />
+              </div>
+              <div className="flex justify-center">
+                <div className="h-8 w-32 bg-gradient-to-r from-blue-800 to-blue-600 rounded" />
+              </div>
+              <div className="flex justify-center">
+                <div className="h-8 w-32 bg-gradient-to-r from-blue-800 to-blue-600 rounded" />
+              </div>
             </div>
           </div>
         </div>
