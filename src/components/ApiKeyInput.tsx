@@ -45,10 +45,9 @@ const ApiKeyInput = ({ onApiKeySubmit }: ApiKeyInputProps) => {
   
   const useTestKey = () => {
     // Use a placeholder for the button, but in a real app you would use an actual demo key
-    setApiKey('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');
-    setError(null);
+    setApiKey('fakekey123');
+        setError(null);
   };
-  
   return (
     <div className="max-w-4xl mx-auto bg-slate-900 rounded-xl overflow-hidden border border-blue-900/30 p-6">
       <div className="text-center mb-6">
