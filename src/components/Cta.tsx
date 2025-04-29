@@ -68,31 +68,31 @@ const Cta = () => {
               </div>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-blue-200 text-transparent bg-clip-text">
-              Ready to Orchestrate Your AI Agents?
-            </h2>
+            Ready to Orchestrate Your AI Agents?
+          </h2>
             <p className="text-xl text-blue-100 opacity-90 mb-8 max-w-2xl mx-auto">
-              Join the early access program and be among the first to transform how your organization 
-              leverages AI agents across business functions.
-            </p>
-            
+            Join the early access program and be among the first to transform how your organization 
+            leverages AI agents across business functions.
+          </p>
+          
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12 staggered-fade-in">
-              <Button 
-                size="lg" 
+            <Button 
+              size="lg" 
                 className={`bg-gradient-to-r from-blue-600 to-blue-400 text-white hover:from-blue-700 hover:to-blue-500 button-glow
                   ${isHovered ? 'animate-pulse-slow' : ''}`}
-              >
-                Request Early Access <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
+            >
+              Request Early Access <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
                 className="text-blue-200 border-blue-400/50 hover:bg-blue-900/20"
-              >
+            >
                 <PlusCircle className="mr-2 h-4 w-4" />
-                Schedule Demo
-              </Button>
-            </div>
-            
+              Schedule Demo
+            </Button>
+          </div>
+          
             <div className="space-y-4">
               <p className="text-blue-200/70 text-sm">Trusted by innovative companies</p>
               <div className="flex flex-wrap justify-center gap-x-12 gap-y-6 opacity-80">

@@ -76,27 +76,27 @@ const Index = () => {
       
       {/* Main content sections */}
       <div ref={el => sectionsRef.current.hero = el}>
-        <Hero />
+      <Hero />
       </div>
       
       <div ref={el => sectionsRef.current.features = el}>
-        <Features />
+      <Features />
       </div>
       
       <div ref={el => sectionsRef.current.howItWorks = el}>
-        <HowItWorks />
+      <HowItWorks />
       </div>
       
       <div ref={el => sectionsRef.current.benefits = el}>
-        <Benefits />
+      <Benefits />
       </div>
       
       <div ref={el => sectionsRef.current.pricing = el}>
-        <Pricing />
+      <Pricing />
       </div>
       
       <div ref={el => sectionsRef.current.cta = el}>
-        <Cta />
+      <Cta />
       </div>
       
       <Footer />

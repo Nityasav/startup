@@ -129,9 +129,9 @@ const Benefits = () => {
           <div className="relative h-[500px] fade-slide-up">
             {/* 3D rotating cards effect */}
             <div className="absolute inset-0 perspective-1000">
-              {businessOutcomes.map((outcome, idx) => (
-                <div 
-                  key={idx}
+            {businessOutcomes.map((outcome, idx) => (
+              <div 
+                key={idx} 
                   className={`absolute top-0 left-0 w-full h-full backface-hidden transition-all duration-700 cursor-pointer
                     ${activeCard === idx 
                       ? 'z-10 opacity-100 transform-none' 
@@ -143,8 +143,8 @@ const Benefits = () => {
                       {outcome.icon}
                     </div>
                     <h3 className="text-3xl font-bold text-white mb-4">
-                      {outcome.title}
-                    </h3>
+                  {outcome.title}
+                </h3>
                     <p className="text-xl text-slate-300">{outcome.description}</p>
                     
                     <div className="mt-12 h-1 w-full bg-blue-900/30 rounded-full overflow-hidden">
@@ -154,8 +154,8 @@ const Benefits = () => {
                       ></div>
                     </div>
                   </div>
-                </div>
-              ))}
+              </div>
+            ))}
             </div>
             
             {/* Card selection dots */}

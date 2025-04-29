@@ -43,7 +43,7 @@ const Hero = () => {
               Documentation
             </Link>
           </div>
-          
+
           <div className="mt-12 bg-black/30 border border-blue-900/20 rounded-xl p-6">
             <p className="text-sm text-slate-400 mb-4">Trusted by leading AI-driven companies</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -55,10 +55,10 @@ const Hero = () => {
               </div>
               <div className="flex justify-center">
                 <div className="h-8 w-32 bg-gradient-to-r from-blue-800 to-blue-600 rounded" />
-              </div>
+            </div>
               <div className="flex justify-center">
                 <div className="h-8 w-32 bg-gradient-to-r from-blue-800 to-blue-600 rounded" />
-              </div>
+            </div>
             </div>
           </div>
         </div>

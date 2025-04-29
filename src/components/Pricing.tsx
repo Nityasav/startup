@@ -113,7 +113,7 @@ const Pricing = () => {
         <div className="text-center max-w-3xl mx-auto mb-16 fade-slide-up">
           <div className="inline-block mb-4 px-4 py-1 bg-black/50 backdrop-blur-md border border-blue-900/30 rounded-full">
             <span className="text-sm font-medium text-blue-400">
-              Simple, Transparent Pricing
+            Simple, Transparent Pricing
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-500 to-blue-300 text-transparent bg-clip-text">
@@ -138,13 +138,13 @@ const Pricing = () => {
                 className={`h-full overflow-hidden bg-black/50 backdrop-blur-md border-2 ${plan.color} 
                   ${plan.highlighted ? 'shadow-lg shadow-blue-500/20' : ''}
                   transition-all duration-300`}
-              >
-                {plan.highlighted && (
+            >
+              {plan.highlighted && (
                   <div className="bg-gradient-to-r from-blue-600 to-blue-400 text-white py-2 px-4 text-center">
-                    <span className="font-medium">Most Popular</span>
-                  </div>
-                )}
-                <div className="p-8">
+                  <span className="font-medium">Most Popular</span>
+                </div>
+              )}
+              <div className="p-8">
                   <div className="flex items-center gap-3 mb-4">
                     <div className={`p-2 rounded-lg ${plan.highlighted ? 'bg-blue-900/50' : 'bg-blue-900/20'}`}>
                       {plan.icon}
@@ -152,23 +152,23 @@ const Pricing = () => {
                     <h3 className="text-2xl font-bold text-white">{plan.name}</h3>
                   </div>
                   
-                  <div className="flex items-baseline mb-4">
+                <div className="flex items-baseline mb-4">
                     <span className="text-4xl font-bold text-white">{plan.price}</span>
                     <span className="text-slate-400 ml-2">/month</span>
-                  </div>
+                </div>
                   <p className="text-slate-300 mb-6">{plan.description}</p>
-                  
-                  <Button 
-                    className={`w-full mb-8 ${
-                      plan.highlighted 
+                
+                <Button 
+                  className={`w-full mb-8 ${
+                    plan.highlighted 
                         ? "bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500 shadow-md shadow-blue-500/20" 
                         : "bg-transparent border border-blue-800 text-blue-300 hover:bg-blue-900/20"
-                    }`}
-                  >
-                    {plan.buttonText}
-                  </Button>
-                  
-                  <ul className="space-y-3">
+                  }`}
+                >
+                  {plan.buttonText}
+                </Button>
+                
+                <ul className="space-y-3">
                     {plan.features.map((feature, featureIdx) => (
                       <li 
                         key={feature} 
@@ -183,11 +183,11 @@ const Pricing = () => {
                             : 'text-blue-600'}`} 
                         />
                         <span className="text-slate-300">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Card>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Card>
             </div>
           ))}
         </div>

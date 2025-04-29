@@ -1,318 +1,299 @@
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { 
-  Activity, 
-  CheckCircle, 
-  Clock, 
-  AlertCircle, 
-  X, 
-  Filter, 
-  UserRound, 
-  Bot, 
-  PlayCircle,
-  PauseCircle,
-  Calendar
-} from "lucide-react";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger,
-  DropdownMenuCheckboxItem,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-
-interface ActivityItem {
-  id: string;
-  time: string;
-  desc: string;
-  type: "workflow" | "agent" | "user" | "system";
-  status?: "success" | "warning" | "error"; 
-  timestamp: Date;
-}
+import { Activity, AlertCircle, CheckCircle, Clock, Filter, RefreshCw, Download, RotateCcw, Bot, GitBranch, User } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function DashboardActivitySection() {
-  const defaultItems: ActivityItem[] = [
+  const activities = [
     {
-      id: "act-1",
-      time: "10:22 AM",
-      desc: "Workflow 'Support Escalation' executed successfully",
+      id: 1,
       type: "workflow",
+      event: "completed",
+      name: "Customer Onboarding",
+      time: "Today at 10:45 AM",
       status: "success",
-      timestamp: new Date(new Date().setMinutes(new Date().getMinutes() - 15)),
+      details: "Workflow completed successfully in 2m 12s",
+      icon: <GitBranch className="h-5 w-5 text-blue-500" />
     },
     {
-      id: "act-2",
-      time: "10:10 AM",
-      desc: "Customer Onboarding workflow paused by Grace Hopper",
-      type: "user",
-      timestamp: new Date(new Date().setMinutes(new Date().getMinutes() - 27)),
-    },
-    {
-      id: "act-3",
-      time: "9:45 AM",
-      desc: "Agent 'Data Sync Bot' added to system",
+      id: 2,
       type: "agent",
-      timestamp: new Date(new Date().setMinutes(new Date().getMinutes() - 52)),
+      event: "created",
+      name: "Data Processor",
+      time: "Today at 9:30 AM",
+      status: "info",
+      details: "New agent added to the system",
+      icon: <Bot className="h-5 w-5 text-purple-500" />
     },
     {
-      id: "act-4",
-      time: "9:32 AM",
-      desc: "Loan Approval Process started by Ada Lovelace",
-      type: "workflow",
-      timestamp: new Date(new Date().setMinutes(new Date().getMinutes() - 65)),
-    },
-    {
-      id: "act-5",
-      time: "9:15 AM",
-      desc: "API rate limit warning for OpenAI integration",
+      id: 3,
       type: "system",
+      event: "warning",
+      name: "API Rate Limit",
+      time: "Today at 8:15 AM",
       status: "warning",
-      timestamp: new Date(new Date().setMinutes(new Date().getMinutes() - 82)),
+      details: "Approaching API rate limit (85% utilized)",
+      icon: <AlertCircle className="h-5 w-5 text-amber-500" />
     },
     {
-      id: "act-6",
-      time: "8:50 AM",
-      desc: "Invoice Processing workflow completed with 3 exceptions",
+      id: 4,
       type: "workflow",
-      status: "warning",
-      timestamp: new Date(new Date().setMinutes(new Date().getMinutes() - 107)),
-    },
-    {
-      id: "act-7",
-      time: "8:30 AM",
-      desc: "Agent 'Technical AI' connection failed",
-      type: "agent",
+      event: "failed",
+      name: "Market Analysis",
+      time: "Yesterday at 5:25 PM",
       status: "error",
-      timestamp: new Date(new Date().setMinutes(new Date().getMinutes() - 127)),
+      details: "Failed at step 3: Data Extraction - Connection timeout",
+      icon: <GitBranch className="h-5 w-5 text-red-500" />
     },
     {
-      id: "act-8",
-      time: "8:25 AM",
-      desc: "System backup completed successfully",
-      type: "system",
-      status: "success",
-      timestamp: new Date(new Date().setMinutes(new Date().getMinutes() - 132)),
-    },
-    {
-      id: "act-9",
-      time: "Yesterday",
-      desc: "Monthly workflow usage report generated",
-      type: "system",
-      timestamp: new Date(new Date().setDate(new Date().getDate() - 1)),
-    },
-    {
-      id: "act-10",
-      time: "Yesterday",
-      desc: "New workflow template 'Customer Journey' created by Alan Turing",
+      id: 5,
       type: "user",
-      timestamp: new Date(new Date().setDate(new Date().getDate() - 1)),
+      event: "action",
+      name: "Configuration Change",
+      time: "Yesterday at 3:10 PM",
+      status: "info",
+      details: "System settings updated by admin",
+      icon: <User className="h-5 w-5 text-green-500" />
+    },
+    {
+      id: 6,
+      type: "agent",
+      event: "status",
+      name: "Customer Support",
+      time: "Yesterday at 2:45 PM",
+      status: "success",
+      details: "Agent status changed to active",
+      icon: <Bot className="h-5 w-5 text-purple-500" />
+    },
+    {
+      id: 7,
+      type: "workflow",
+      event: "started",
+      name: "Content Approval",
+      time: "Yesterday at 1:30 PM",
+      status: "info",
+      details: "Workflow triggered by scheduled event",
+      icon: <GitBranch className="h-5 w-5 text-blue-500" />
+    },
+    {
+      id: 8,
+      type: "system",
+      event: "maintenance",
+      name: "System Update",
+      time: "2 days ago",
+      status: "warning",
+      details: "Scheduled maintenance completed",
+      icon: <RefreshCw className="h-5 w-5 text-blue-500" />
     },
   ];
-  
-  const [activityItems, setActivityItems] = useState<ActivityItem[]>(defaultItems);
-  const [activeFilters, setActiveFilters] = useState<string[]>(["workflow", "agent", "user", "system"]);
-  const [activeStatusFilters, setActiveStatusFilters] = useState<string[]>(["success", "warning", "error", "none"]);
-  
-  const clearActivity = () => {
-    setActivityItems([]);
-    toast.success("Activity log cleared");
-  };
-  
-  const resetActivity = () => {
-    setActivityItems(defaultItems);
-    toast.success("Activity log reset to default");
-  };
-  
-  const toggleTypeFilter = (type: string) => {
-    if (activeFilters.includes(type)) {
-      setActiveFilters(activeFilters.filter(t => t !== type));
-    } else {
-      setActiveFilters([...activeFilters, type]);
-    }
-  };
-  
-  const toggleStatusFilter = (status: string) => {
-    if (activeStatusFilters.includes(status)) {
-      setActiveStatusFilters(activeStatusFilters.filter(s => s !== status));
-    } else {
-      setActiveStatusFilters([...activeStatusFilters, status]);
-    }
-  };
-  
-  const getFilteredItems = () => {
-    return activityItems.filter(item => {
-      const typeMatch = activeFilters.includes(item.type);
-      
-      // If no status, consider it as "none" for filtering
-      const itemStatus = item.status || "none";
-      const statusMatch = activeStatusFilters.includes(itemStatus);
-      
-      return typeMatch && statusMatch;
-    });
-  };
-  
-  const getActivityIcon = (item: ActivityItem) => {
-    switch (item.type) {
-      case "workflow":
-        if (item.desc.includes("paused")) return <PauseCircle className="h-5 w-5 text-yellow-500" />;
-        if (item.desc.includes("started")) return <PlayCircle className="h-5 w-5 text-green-500" />;
-        return <Activity className="h-5 w-5 text-blue-500" />;
-      case "agent":
-        return <Bot className="h-5 w-5 text-purple-500" />;
-      case "user":
-        return <UserRound className="h-5 w-5 text-indigo-500" />;
-      case "system":
-        return <Clock className="h-5 w-5 text-gray-500" />;
-      default:
-        return <Activity className="h-5 w-5" />;
-    }
-  };
-  
-  const getStatusIcon = (status?: string) => {
+
+  const getStatusBadge = (status) => {
     switch (status) {
       case "success":
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case "warning":
-        return <AlertCircle className="h-4 w-4 text-yellow-500" />;
+        return (
+          <Badge className="bg-green-500/10 text-green-500 border-green-500/20" variant="outline">
+            <CheckCircle className="h-3.5 w-3.5 mr-1" /> Success
+          </Badge>
+        );
       case "error":
-        return <X className="h-4 w-4 text-red-500" />;
+        return (
+          <Badge className="bg-red-500/10 text-red-500 border-red-500/20" variant="outline">
+            <AlertCircle className="h-3.5 w-3.5 mr-1" /> Error
+          </Badge>
+        );
+      case "warning":
+        return (
+          <Badge className="bg-amber-500/10 text-amber-500 border-amber-500/20" variant="outline">
+            <AlertCircle className="h-3.5 w-3.5 mr-1" /> Warning
+          </Badge>
+        );
+      case "info":
       default:
-        return null;
+        return (
+          <Badge className="bg-blue-500/10 text-blue-500 border-blue-500/20" variant="outline">
+            <Activity className="h-3.5 w-3.5 mr-1" /> Info
+          </Badge>
+        );
     }
   };
-  
+
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold">Activity Log</h2>
-          <p className="text-muted-foreground">Real-time monitoring of system activities</p>
-        </div>
-        <div className="flex gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Filter className="h-4 w-4 mr-2" />
-                Filter
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem disabled className="font-medium">
-                Filter by type
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuCheckboxItem 
-                checked={activeFilters.includes("workflow")}
-                onCheckedChange={() => toggleTypeFilter("workflow")}
-              >
-                Workflow events
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem 
-                checked={activeFilters.includes("agent")}
-                onCheckedChange={() => toggleTypeFilter("agent")}
-              >
-                Agent events
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem 
-                checked={activeFilters.includes("user")}
-                onCheckedChange={() => toggleTypeFilter("user")}
-              >
-                User actions
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem 
-                checked={activeFilters.includes("system")}
-                onCheckedChange={() => toggleTypeFilter("system")}
-              >
-                System events
-              </DropdownMenuCheckboxItem>
-              
-              <DropdownMenuSeparator />
-              <DropdownMenuItem disabled className="font-medium">
-                Filter by status
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuCheckboxItem 
-                checked={activeStatusFilters.includes("success")}
-                onCheckedChange={() => toggleStatusFilter("success")}
-              >
-                Success
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem 
-                checked={activeStatusFilters.includes("warning")}
-                onCheckedChange={() => toggleStatusFilter("warning")}
-              >
-                Warning
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem 
-                checked={activeStatusFilters.includes("error")}
-                onCheckedChange={() => toggleStatusFilter("error")}
-              >
-                Error
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem 
-                checked={activeStatusFilters.includes("none")}
-                onCheckedChange={() => toggleStatusFilter("none")}
-              >
-                No status
-              </DropdownMenuCheckboxItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          
-          <Button variant="ghost" size="sm" onClick={clearActivity}>
-            Clear
-          </Button>
-          
-          <Button variant="ghost" size="sm" onClick={resetActivity}>
-            Reset
-          </Button>
-        </div>
+    <div className="space-y-4">
+      <h1 className="text-xl font-semibold mb-3">Activity</h1>
+      
+      {/* Activity Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card className="bg-[#131318] border-0">
+          <CardContent className="pt-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="text-muted-foreground text-sm">Today's Events</p>
+                <p className="text-3xl font-bold mt-1">23</p>
+              </div>
+              <Activity className="h-8 w-8 text-blue-500 opacity-80" />
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-[#131318] border-0">
+          <CardContent className="pt-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="text-muted-foreground text-sm">Success Rate</p>
+                <p className="text-3xl font-bold mt-1">94%</p>
+              </div>
+              <CheckCircle className="h-8 w-8 text-green-500 opacity-80" />
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-[#131318] border-0">
+          <CardContent className="pt-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="text-muted-foreground text-sm">Issues</p>
+                <p className="text-3xl font-bold mt-1">2</p>
+              </div>
+              <AlertCircle className="h-8 w-8 text-amber-500 opacity-80" />
+            </div>
+          </CardContent>
+        </Card>
       </div>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
-          <CardDescription>
-            Showing {getFilteredItems().length} events from the activity log
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-1">
-            {getFilteredItems().length > 0 ? (
-              getFilteredItems().map(item => (
-                <div 
-                  key={item.id} 
-                  className="flex items-start gap-3 p-3 hover:bg-muted/50 rounded-md transition-colors"
-                >
-                  <div className="mt-0.5">
-                    {getActivityIcon(item)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <p className="text-sm">{item.desc}</p>
-                      {getStatusIcon(item.status) && (
-                        <div className="flex-shrink-0 mt-0.5">
-                          {getStatusIcon(item.status)}
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex items-center text-xs text-muted-foreground mt-1">
-                      <Calendar className="h-3 w-3 mr-1" />
-                      <span>{item.time}</span>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="py-8 text-center text-muted-foreground">
-                No activity found matching the current filters.
-              </div>
-            )}
+      <Tabs defaultValue="all" className="w-full">
+        <div className="flex justify-between items-center mb-4">
+          <TabsList className="grid grid-cols-5 w-[450px]">
+            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="workflows">Workflows</TabsTrigger>
+            <TabsTrigger value="agents">Agents</TabsTrigger>
+            <TabsTrigger value="system">System</TabsTrigger>
+            <TabsTrigger value="users">Users</TabsTrigger>
+          </TabsList>
+          
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" className="h-8 border-blue-900/30 bg-blue-900/10 hover:bg-blue-900/20">
+              <Filter className="h-3.5 w-3.5 mr-1" /> Filter
+            </Button>
+            <Button variant="outline" size="sm" className="h-8 border-blue-900/30 bg-blue-900/10 hover:bg-blue-900/20">
+              <RefreshCw className="h-3.5 w-3.5 mr-1" /> Refresh
+            </Button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+        
+        <TabsContent value="all" className="m-0">
+          <Card className="bg-[#131318] border-0">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Activity Log</CardTitle>
+              <CardDescription>Recent system activities and events</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {activities.map((activity) => (
+                  <div key={activity.id} className="border border-blue-900/20 rounded-md p-4 bg-blue-900/10 hover:bg-blue-900/20 transition-colors">
+                    <div className="flex items-start">
+                      <div className="mr-3 mt-0.5">
+                        {activity.icon}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                          <div>
+                            <h3 className="font-medium">{activity.name}</h3>
+                            <p className="text-sm text-muted-foreground mt-0.5">{activity.details}</p>
+                          </div>
+                          <div className="flex items-center gap-2 mt-2 sm:mt-0">
+                            {getStatusBadge(activity.status)}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+                          <span className="flex items-center">
+                            <Clock className="h-3.5 w-3.5 mr-1" /> {activity.time}
+                          </span>
+                          <Badge variant="secondary" className="text-xs bg-blue-950/40 hover:bg-blue-950/60">
+                            {activity.type}
+                          </Badge>
+                          <Badge variant="secondary" className="text-xs bg-blue-950/40 hover:bg-blue-950/60">
+                            {activity.event}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="flex justify-between items-center mt-6">
+                <Button variant="outline" className="text-xs border-blue-900/30 bg-blue-900/10 hover:bg-blue-900/20">
+                  <RotateCcw className="h-3.5 w-3.5 mr-1" /> Load More
+                </Button>
+                <Button variant="outline" className="text-xs border-blue-900/30 bg-blue-900/10 hover:bg-blue-900/20">
+                  <Download className="h-3.5 w-3.5 mr-1" /> Export Log
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="workflows" className="m-0">
+          <Card className="bg-[#131318] border-0 p-6">
+            <div className="flex flex-col items-center justify-center text-center p-8">
+              <GitBranch className="h-12 w-12 text-blue-500 mb-4" />
+              <h3 className="text-xl font-medium mb-2">Workflow Activity</h3>
+              <p className="text-muted-foreground mb-6 max-w-md">
+                View detailed logs of all workflow executions, triggers, completions, and errors.
+              </p>
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                View Workflow Logs
+              </Button>
+            </div>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="agents" className="m-0">
+          <Card className="bg-[#131318] border-0 p-6">
+            <div className="flex flex-col items-center justify-center text-center p-8">
+              <Bot className="h-12 w-12 text-purple-500 mb-4" />
+              <h3 className="text-xl font-medium mb-2">Agent Activity</h3>
+              <p className="text-muted-foreground mb-6 max-w-md">
+                Monitor agent status changes, task completions, and performance metrics.
+              </p>
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                View Agent Logs
+              </Button>
+            </div>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="system" className="m-0">
+          <Card className="bg-[#131318] border-0 p-6">
+            <div className="flex flex-col items-center justify-center text-center p-8">
+              <Activity className="h-12 w-12 text-blue-500 mb-4" />
+              <h3 className="text-xl font-medium mb-2">System Events</h3>
+              <p className="text-muted-foreground mb-6 max-w-md">
+                View system-level events, maintenance updates, and service status changes.
+              </p>
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                View System Logs
+              </Button>
+            </div>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="users" className="m-0">
+          <Card className="bg-[#131318] border-0 p-6">
+            <div className="flex flex-col items-center justify-center text-center p-8">
+              <User className="h-12 w-12 text-green-500 mb-4" />
+              <h3 className="text-xl font-medium mb-2">User Activity</h3>
+              <p className="text-muted-foreground mb-6 max-w-md">
+                Track user interactions, configuration changes, and administrative actions.
+              </p>
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                View User Logs
+              </Button>
+            </div>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

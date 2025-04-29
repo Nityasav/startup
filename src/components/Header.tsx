@@ -4,10 +4,13 @@ import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import { UserMenu } from "@/components/auth/UserMenu";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   // Add scroll event listener
   if (typeof window !== 'undefined') {
@@ -85,12 +88,33 @@ const Header = () => {
               </li>
             ))}
           </ul>
-          <Button 
-            className="bg-venturly-600 hover:bg-venturly-700"
-            onClick={handleDemoRequest}
-          >
-            Request Demo
-          </Button>
+          {user ? (
+            <div className="flex items-center gap-4">
+              <Button 
+                variant="default"
+                onClick={() => navigate('/dashboard')}
+                className="bg-venturly-600 hover:bg-venturly-700"
+              >
+                Dashboard
+              </Button>
+              <UserMenu />
+            </div>
+          ) : (
+            <div className="flex items-center gap-4">
+              <Button 
+                variant="outline"
+                onClick={() => navigate('/auth')}
+              >
+                Sign In
+              </Button>
+              <Button 
+                className="bg-venturly-600 hover:bg-venturly-700"
+                onClick={handleDemoRequest}
+              >
+                Request Demo
+              </Button>
+            </div>
+          )}
         </nav>
 
         {/* Mobile Navigation */}
@@ -116,12 +140,43 @@ const Header = () => {
                     {link.label}
                   </a>
                 ))}
-                <Button 
-                  className="mt-4 w-full bg-venturly-600 hover:bg-venturly-700"
-                  onClick={handleDemoRequest}
-                >
-                  Request Demo
-                </Button>
+                {user ? (
+                  <>
+                    <a
+                      href="/dashboard"
+                      className="py-2 px-4 text-lg font-medium hover:bg-muted rounded-md"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate('/dashboard');
+                      }}
+                    >
+                      Dashboard
+                    </a>
+                    <Button 
+                      variant="destructive"
+                      className="mt-4 w-full"
+                      onClick={() => signOut()}
+                    >
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button 
+                      variant="outline"
+                      className="mt-4 w-full"
+                      onClick={() => navigate('/auth')}
+                    >
+                      Sign In
+                    </Button>
+                    <Button 
+                      className="w-full bg-venturly-600 hover:bg-venturly-700"
+                      onClick={handleDemoRequest}
+                    >
+                      Request Demo
+                    </Button>
+                  </>
+                )}
               </div>
             </SheetContent>
           </Sheet>
