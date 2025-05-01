@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Key, Eye, EyeOff } from 'lucide-react';
 import { initializeOpenAI } from '@/services/openai';
+const apiKey = import.meta.env.OPENAPI_KEY;
 interface ApiKeyInputProps {
   onApiKeySubmit: (isValid: boolean) => void;
 }
@@ -44,7 +45,7 @@ const ApiKeyInput = ({ onApiKeySubmit }: ApiKeyInputProps) => {
   
   const useTestKey = () => {
    // Use a placeholder for the button, but in a real app you would use an actual demo key
-    setApiKey('something123');
+    setApiKey(apiKey);
     setError(null);
   };
   return (
