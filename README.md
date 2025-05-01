@@ -181,6 +181,64 @@ This project is built with:
 
 ## How can I deploy this project?
 
+### Deploying to Vercel
+
+1. Create a Vercel account at https://vercel.com/
+2. Install the Vercel CLI: `npm i -g vercel`
+3. Run `vercel login` and follow the prompts
+4. From your project directory, run `vercel`
+5. Set up your environment variables in the Vercel dashboard:
+   - VITE_SUPABASE_URL
+   - VITE_SUPABASE_ANON_KEY
+
+### Setting Up a Custom Domain
+
+1. In your Vercel project settings, go to the "Domains" section
+2. Add your custom domain (e.g., venturly.ca)
+3. Follow the DNS configuration instructions
+
+### Troubleshooting Deployment Issues
+
+#### Fixing Black Screen After Deployment
+
+If you encounter a black screen after deployment:
+
+1. **Check environment variables**: Make sure all required environment variables are set in Vercel
+   - Go to your project in the Vercel dashboard
+   - Navigate to Settings > Environment Variables
+   - Add all required variables (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY)
+
+2. **Verify build settings**: Ensure Vercel is using the correct build command and output directory
+   - The project includes a `vercel.json` file that configures these settings
+   - Build command should be `npm run build`
+   - Output directory should be `dist`
+
+3. **Check browser console**: Look for errors in your browser's developer tools
+   - Press F12 in your browser to open developer tools
+   - Check the Console tab for error messages
+
+4. **Clear browser cache**: Try clearing your browser cache or opening in incognito mode
+
+5. **Check Vercel logs**: Review build and deployment logs in the Vercel dashboard
+   - Navigate to your project in Vercel
+   - Go to the Deployments tab
+   - Click on the latest deployment to see logs
+
+6. **Test locally with production build**: Test your production build locally before deploying
+   ```bash
+   npm run build
+   npm run preview
+   ```
+
+### Alternative Deployment Options
+
+You can also deploy this project to:
+
+- Netlify
+- AWS Amplify
+- GitHub Pages 
+- Firebase Hosting
+
 Simply open [Lovable](https://lovable.dev/projects/5ae51171-5f1f-4ae9-9525-e19485af8064) and click on Share -> Publish.
 
 ## Can I connect a custom domain to my Lovable project?
