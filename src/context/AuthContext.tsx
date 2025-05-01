@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import { initializeUserData } from '@/services/userDataService';
 
 type AuthContextType = {
   session: Session | null;
@@ -19,6 +20,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Initialize user data when user is set
+  useEffect(() => {
+    const setupUserData = async () => {
+      if (user) {
+        await initializeUserData(user);
+      }
+    };
+    
+    setupUserData();
+  }, [user]);
 
   useEffect(() => {
     // Get initial session
