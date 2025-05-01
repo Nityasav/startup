@@ -1,4 +1,4 @@
-import { Activity } from "lucide-react";
+import { Activity, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Hero = () => {
@@ -7,28 +7,28 @@ const Hero = () => {
       <div className="container">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-950/30 border border-blue-900/30 px-4 py-2 rounded-full mb-8">
-            <Activity className="h-4 w-4 text-blue-400" />
+            <Sparkles className="h-4 w-4 text-blue-400" />
             <span className="text-sm text-blue-400 font-medium">
-              Orchestrate AI workflows like never before
+              Transform your business with AI-powered automation
             </span>
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
-            Turn AI Agents Into Powerful <br /> Orchestrated Workflows
+            Empower Your Ventures <br /> With Intelligent AI
           </h1>
           
           <p className="text-xl text-slate-300 mb-10">
-            Connect, automate, and manage AI agents across your organization
-            with our intuitive no-code orchestration platform. Unlock AI productivity
-            without the complexity.
+            Venturly helps businesses design, deploy, and manage powerful AI systems
+            that streamline operations and unlock new possibilities. Start your
+            AI venture with confidence.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
-              to="/demo" 
+              to="/dashboard" 
               className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-lg font-medium"
             >
-              Try Demo Dashboard
+              Get Started
             </Link>
             <Link 
               to="#features" 
