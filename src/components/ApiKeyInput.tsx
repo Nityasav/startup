@@ -44,7 +44,7 @@ const ApiKeyInput = ({ onApiKeySubmit }: ApiKeyInputProps) => {
   
   const useTestKey = () => {
    // Use a placeholder for the button, but in a real app you would use an actual demo key
-    setApiKey('');
+    setApiKey('something123');
     setError(null);
   };
   return (
