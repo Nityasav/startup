@@ -43,8 +43,8 @@ const ApiKeyInput = ({ onApiKeySubmit }: ApiKeyInputProps) => {
   };
   
   const useTestKey = () => {
-    // Use a placeholder for the button, but in a real app you would use an actual demo key
-    setApiKey('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');
+   // Use a placeholder for the button, but in a real app you would use an actual demo key
+    setApiKey('');
     setError(null);
   };
   return (
