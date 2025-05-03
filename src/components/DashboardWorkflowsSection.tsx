@@ -4,9 +4,44 @@ import { Plus, GitBranch, Clock, CheckCircle, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardWorkflowsSection() {
-  const [hasWorkflows, setHasWorkflows] = useState(false);
+  const [hasWorkflows, setHasWorkflows] = useState(true);
+  const navigate = useNavigate();
+  
+  const demoWorkflows = [
+    {
+      id: 'wf1',
+      name: 'Customer Onboarding',
+      description: 'Automates new user welcome, setup, and personalization',
+      status: 'active',
+      lastRun: '10 minutes ago',
+      success: '98%',
+      agents: 4,
+      steps: 8
+    },
+    {
+      id: 'wf2',
+      name: 'Support Ticket Resolution',
+      description: 'Analyzes and routes customer support tickets to appropriate agents',
+      status: 'active',
+      lastRun: '3 hours ago',
+      success: '92%',
+      agents: 3,
+      steps: 6
+    },
+    {
+      id: 'wf3',
+      name: 'Content Generation Pipeline',
+      description: 'Automates content creation, editing, and publishing workflow',
+      status: 'active',
+      lastRun: '1 day ago',
+      success: '95%',
+      agents: 5,
+      steps: 10
+    }
+  ];
 
   return (
     <div className="space-y-4">
@@ -28,7 +63,7 @@ export default function DashboardWorkflowsSection() {
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-muted-foreground text-sm">Active Workflows</p>
-                    <p className="text-3xl font-bold mt-1">0</p>
+                    <p className="text-3xl font-bold mt-1">3</p>
                   </div>
                   <GitBranch className="h-8 w-8 text-blue-500 opacity-80" />
                 </div>
@@ -40,7 +75,7 @@ export default function DashboardWorkflowsSection() {
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-muted-foreground text-sm">Avg. Duration</p>
-                    <p className="text-3xl font-bold mt-1">--</p>
+                    <p className="text-3xl font-bold mt-1">1.5m</p>
                   </div>
                   <Clock className="h-8 w-8 text-green-500 opacity-80" />
                 </div>
@@ -52,7 +87,7 @@ export default function DashboardWorkflowsSection() {
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-muted-foreground text-sm">Success Rate</p>
-                    <p className="text-3xl font-bold mt-1">--</p>
+                    <p className="text-3xl font-bold mt-1">95%</p>
                   </div>
                   <CheckCircle className="h-8 w-8 text-purple-500 opacity-80" />
                 </div>
@@ -64,13 +99,16 @@ export default function DashboardWorkflowsSection() {
           <div className="flex justify-between items-center">
             <Button 
               className="bg-blue-600 hover:bg-blue-700"
-              onClick={() => setHasWorkflows(!hasWorkflows)}
+              onClick={() => navigate('/workflow/new')}
             >
               <Plus className="h-4 w-4 mr-1" /> Create Workflow
             </Button>
             
-            <Badge className="bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 cursor-pointer">
-              View Workflow Templates
+            <Badge 
+              className="bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 cursor-pointer"
+              onClick={() => setHasWorkflows(!hasWorkflows)}
+            >
+              {hasWorkflows ? 'Clear Demo Data' : 'Load Demo Data'}
             </Badge>
           </div>
           
@@ -82,15 +120,62 @@ export default function DashboardWorkflowsSection() {
                 <CardDescription>View and manage your current workflows</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex flex-col items-center justify-center py-8">
-                  <p className="text-muted-foreground text-center mb-2">Your workflows will appear here</p>
-                  <Button 
-                    variant="outline" 
-                    className="border-blue-900/30 bg-blue-900/10 hover:bg-blue-900/20"
-                    onClick={() => setHasWorkflows(false)}
-                  >
-                    Clear Demo Data
-                  </Button>
+                <div className="space-y-4">
+                  {demoWorkflows.map((workflow) => (
+                    <div 
+                      key={workflow.id} 
+                      className="border border-blue-900/20 rounded-lg p-4 bg-slate-900/50 hover:bg-slate-900 transition-colors cursor-pointer"
+                      onClick={() => navigate(`/workflow/${workflow.id}`)}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-medium text-lg">{workflow.name}</h3>
+                            <Badge className="bg-green-500/10 text-green-400 h-5">Active</Badge>
+                          </div>
+                          <p className="text-muted-foreground mt-1">{workflow.description}</p>
+                        </div>
+                        <Badge className="bg-blue-500/10 text-blue-400">Success: {workflow.success}</Badge>
+                      </div>
+                      
+                      <div className="mt-4 grid grid-cols-4 gap-4 text-sm">
+                        <div>
+                          <p className="text-muted-foreground">Last Run</p>
+                          <p className="text-white">{workflow.lastRun}</p>
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground">Agents</p>
+                          <p className="text-white">{workflow.agents}</p>
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground">Steps</p>
+                          <p className="text-white">{workflow.steps}</p>
+                        </div>
+                        <div className="text-right">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="border-blue-900/30 bg-blue-900/10 hover:bg-blue-900/20"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/workflow/${workflow.id}`);
+                            }}
+                          >
+                            Edit Workflow
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="flex justify-end">
+                    <Button 
+                      variant="outline" 
+                      className="border-blue-900/30 bg-blue-900/10 hover:bg-blue-900/20"
+                      onClick={() => setHasWorkflows(false)}
+                    >
+                      Clear Demo Data
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -141,8 +226,8 @@ export default function DashboardWorkflowsSection() {
             <CardHeader className="pb-2">
               <CardTitle className="text-base">Workflow Templates</CardTitle>
               <CardDescription>Pre-built workflows to help you get started quickly</CardDescription>
-            </CardHeader>
-            <CardContent>
+      </CardHeader>
+      <CardContent>
               <div className="flex flex-col items-center justify-center py-8">
                 <GitBranch className="h-16 w-16 text-blue-500 opacity-20 mb-4" />
                 <h3 className="text-lg font-medium mb-2">Workflow Templates Coming Soon</h3>
@@ -170,8 +255,8 @@ export default function DashboardWorkflowsSection() {
               <div className="flex flex-col items-center justify-center py-8">
                 <p className="text-muted-foreground">You have no archived workflows</p>
               </div>
-            </CardContent>
-          </Card>
+      </CardContent>
+    </Card>
         </TabsContent>
       </Tabs>
     </div>

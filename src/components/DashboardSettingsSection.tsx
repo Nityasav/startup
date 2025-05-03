@@ -206,8 +206,8 @@ export default function DashboardSettingsSection() {
       <Card className="bg-[#131318] border-0">
         <CardHeader className="pb-2">
           <CardTitle className="text-base">Account Settings</CardTitle>
-        </CardHeader>
-        <CardContent>
+      </CardHeader>
+      <CardContent>
           <Tabs 
             defaultValue="general" 
             className="w-full"
@@ -449,15 +449,15 @@ export default function DashboardSettingsSection() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <CreditCard className="h-5 w-5 text-blue-500" />
-                    <div>
+          <div>
                       <p className="text-sm font-medium">Subscription</p>
                       <p className="text-xs text-muted-foreground">Manage your billing information</p>
                     </div>
-                  </div>
-                </div>
+            </div>
+          </div>
                 
                 <div className="border border-blue-900/20 rounded-md p-3 space-y-3 bg-blue-900/10">
-                  <div>
+          <div>
                     <div className="flex justify-between items-center">
                       <p className="text-sm font-medium">Current Plan</p>
                       <Button 
@@ -519,8 +519,8 @@ export default function DashboardSettingsSection() {
                       <Button variant="outline" className="h-8 text-xs border-blue-900/20 bg-blue-900/10 hover:bg-blue-900/20">Update</Button>
                       <Button variant="outline" className="h-8 text-xs border-blue-900/20 bg-blue-900/10 hover:bg-blue-900/20">View Invoices</Button>
                     </div>
-                  </div>
-                </div>
+          </div>
+        </div>
                 
                 <Button 
                   className="w-full bg-blue-600 hover:bg-blue-700 mt-3"
@@ -539,8 +539,8 @@ export default function DashboardSettingsSection() {
               </div>
             </TabsContent>
           </Tabs>
-        </CardContent>
-      </Card>
+      </CardContent>
+    </Card>
       
       <Toaster />
     </div>

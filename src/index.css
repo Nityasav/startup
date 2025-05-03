@@ -216,3 +216,74 @@
     }
   }
 }
+
+/* Workflow Designer Styles */
+.cursor-grabbing {
+  cursor: grabbing !important;
+  user-select: none !important;
+}
+
+.cursor-grabbing * {
+  cursor: grabbing !important;
+  user-select: none !important;
+}
+
+.cursor-crosshair {
+  cursor: crosshair !important;
+}
+
+.cursor-crosshair * {
+  cursor: crosshair !important;
+}
+
+.node-dragging {
+  opacity: 0.8;
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5) !important;
+  transform: scale(1.05);
+  z-index: 50 !important;
+}
+
+.node-draggable {
+  transition: transform 0.1s, box-shadow 0.1s, opacity 0.1s;
+  cursor: grab;
+  user-select: none;
+}
+
+.node-draggable:hover {
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.node-draggable:active {
+  cursor: grabbing;
+}
+
+.connection-effect {
+  animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 5px rgba(59, 130, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+.drop-effect {
+  animation: ripple 0.5s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(20);
+    opacity: 0;
+  }
+}

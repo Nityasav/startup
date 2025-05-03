@@ -43,7 +43,7 @@ const Footer = () => {
               </a>
             </div>
           </div>
-          
+
           {/* Solutions */}
           <div>
             <h3 className="font-medium text-white mb-4">Solutions</h3>
@@ -75,7 +75,7 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          
+
           {/* Resources */}
           <div>
             <h3 className="font-medium text-white mb-4">Resources</h3>
@@ -107,7 +107,7 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          
+
           {/* Company */}
           <div>
             <h3 className="font-medium text-white mb-4">Company</h3>
@@ -140,7 +140,7 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        
+
         <div className="mt-10 pt-6 border-t border-blue-900/20 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm mb-4 md:mb-0">
             &copy; {new Date().getFullYear()} Venturly, Inc. All rights reserved.

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Pricing = () => {
   const navigate = useNavigate();
-  
+
   return (
     <section id="pricing" className="py-20 bg-gradient-to-b from-black to-blue-950">
       <div className="container">
@@ -15,7 +15,7 @@ const Pricing = () => {
             Choose the plan that's right for your business needs
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Starter Plan */}
           <div className="bg-black/30 border border-blue-900/30 rounded-lg p-8 relative">
@@ -57,7 +57,7 @@ const Pricing = () => {
             >
               Get Started
             </button>
-          </div>
+                </div>
           
           {/* Professional Plan */}
           <div className="bg-blue-900/20 border border-blue-500/50 rounded-lg p-8 relative transform scale-105 z-10 shadow-lg">
@@ -65,7 +65,7 @@ const Pricing = () => {
               <span className="bg-blue-500 text-white text-sm py-1 px-3 rounded-full">
                 Most Popular
               </span>
-            </div>
+                </div>
             
             <div className="mb-6">
               <h3 className="text-xl font-semibold text-white mb-2">Professional</h3>
@@ -100,8 +100,8 @@ const Pricing = () => {
               <li className="flex items-start gap-2">
                 <Check className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
                 <span className="text-slate-300">Custom integrations</span>
-              </li>
-            </ul>
+                    </li>
+                </ul>
             
             <button
               onClick={() => navigate('/signup')}

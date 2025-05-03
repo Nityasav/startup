@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { 
+import {
   LayoutDashboard, 
   Bot, 
   GitBranch, 
@@ -146,7 +146,7 @@ export default function DashboardSidebar({
                 <div className="flex items-center justify-between w-full">
                   <span>Chat</span>
                   <span className="bg-blue-500 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">3</span>
-                </div>
+            </div>
               )}
             </Button>
           </div>
@@ -177,7 +177,7 @@ export default function DashboardSidebar({
                 activeSection === "settings" ? "bg-blue-500 text-white hover:bg-blue-600" : "hover:bg-blue-500/10 text-foreground"
               )}
               onClick={() => handleSectionClick("settings")}
-            >
+                  >
               <Settings className={cn("h-5 w-5", isCollapsed ? "" : "mr-2")} />
               {!isCollapsed && <span>Settings</span>}
             </Button>

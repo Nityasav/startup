@@ -107,12 +107,12 @@ const Header = () => {
               >
                 Sign In
               </Button>
-              <Button 
-                className="bg-venturly-600 hover:bg-venturly-700"
-                onClick={handleDemoRequest}
-              >
-                Request Demo
-              </Button>
+          <Button 
+            className="bg-venturly-600 hover:bg-venturly-700"
+            onClick={handleDemoRequest}
+          >
+            Request Demo
+          </Button>
             </div>
           )}
         </nav>
@@ -169,12 +169,12 @@ const Header = () => {
                     >
                       Sign In
                     </Button>
-                    <Button 
+                <Button 
                       className="w-full bg-venturly-600 hover:bg-venturly-700"
-                      onClick={handleDemoRequest}
-                    >
-                      Request Demo
-                    </Button>
+                  onClick={handleDemoRequest}
+                >
+                  Request Demo
+                </Button>
                   </>
                 )}
               </div>
