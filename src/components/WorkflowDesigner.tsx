@@ -720,7 +720,7 @@ const WorkflowDesigner = ({ workflowId }: WorkflowDesignerProps) => {
             {nodes.map(node => (
               <div
                 key={node.id}
-                className={`absolute rounded-lg border ${nodeColors[node.type]} p-3 shadow-md w-[180px] node-draggable 
+                className={`absolute rounded-lg border ${nodeColors[node.type]} p-4 shadow-md w-[200px] node-draggable 
                   ${draggedNode?.id === node.id ? 'node-dragging' : ''}
                   ${selectedNode?.id === node.id ? 'ring-2 ring-blue-500/70' : ''}`}
                 style={{
