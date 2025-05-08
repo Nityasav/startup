@@ -257,6 +257,24 @@
   cursor: grabbing;
 }
 
+/* Node text styles */
+.node-text {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.node-details {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  max-height: 36px;
+}
+
 .connection-effect {
   animation: pulse 0.3s ease-in-out;
 }

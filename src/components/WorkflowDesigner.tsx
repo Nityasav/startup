@@ -27,8 +27,8 @@ const ConnectionPreviewLine = ({ sourceNodeId, mousePosition, nodes }: Connectio
   
   if (!sourceNode) return null;
   
-  const startX = sourceNode.position.x + 150; // End of node
-  const startY = sourceNode.position.y + 40;  // Middle of node
+  const startX = sourceNode.position.x + 170; // End of node
+  const startY = sourceNode.position.y + 45;  // Middle of node
   const endX = mousePosition.x;
   const endY = mousePosition.y;
   
@@ -296,10 +296,10 @@ const WorkflowDesigner = ({ workflowId }: WorkflowDesignerProps) => {
         lineEffect.style.transition = 'all 0.3s ease-out';
         
         // Position at source
-        const sourceX = sourceNode.position.x + 150; // End of the node
-        const sourceY = sourceNode.position.y + 40; // Middle of the node
+        const sourceX = sourceNode.position.x + 170; // End of the node
+        const sourceY = sourceNode.position.y + 45; // Middle of the node
         const targetX = targetNode.position.x;
-        const targetY = targetNode.position.y + 40;
+        const targetY = targetNode.position.y + 45;
         
         const length = Math.sqrt(Math.pow(targetX - sourceX, 2) + Math.pow(targetY - sourceY, 2));
         const angle = Math.atan2(targetY - sourceY, targetX - sourceX) * 180 / Math.PI;
@@ -447,8 +447,8 @@ const WorkflowDesigner = ({ workflowId }: WorkflowDesignerProps) => {
     
     // Calculate the drop position with a small offset for better visual placement
     const designerRect = designerRef.current.getBoundingClientRect();
-    const x = e.clientX - designerRect.left - 90; // Center the node horizontally (half of the width)
-    const y = e.clientY - designerRect.top - 30;  // Offset from the cursor
+    const x = e.clientX - designerRect.left - 100; // Center the node horizontally (half of the width)
+    const y = e.clientY - designerRect.top - 40;  // Offset from the cursor
     
     try {
       const data = e.dataTransfer.getData('application/json');
@@ -738,50 +738,50 @@ const WorkflowDesigner = ({ workflowId }: WorkflowDesignerProps) => {
                   }
                 }}
               >
-                <div className="flex items-start gap-2 mb-2">
+                <div className="flex items-start gap-3 mb-3">
                   {node.type === 'start' && (
-                    <div className="bg-green-600/30 rounded p-1">
+                    <div className="bg-green-600/30 rounded p-1.5 flex-shrink-0">
                       <ArrowRight className="h-4 w-4 text-green-400" />
                     </div>
                   )}
                   {node.type === 'agent' && (
-                    <div className="bg-blue-600/30 rounded p-1">
+                    <div className="bg-blue-600/30 rounded p-1.5 flex-shrink-0">
                       <Bot className="h-4 w-4 text-blue-400" />
                     </div>
                   )}
                   {node.type === 'condition' && (
-                    <div className="bg-yellow-600/30 rounded p-1">
+                    <div className="bg-yellow-600/30 rounded p-1.5 flex-shrink-0">
                       <Settings className="h-4 w-4 text-yellow-400" />
                     </div>
                   )}
                   {node.type === 'approval' && (
-                    <div className="bg-purple-600/30 rounded p-1">
+                    <div className="bg-purple-600/30 rounded p-1.5 flex-shrink-0">
                       <User className="h-4 w-4 text-purple-400" />
                     </div>
                   )}
                   {node.type === 'end' && (
-                    <div className="bg-red-600/30 rounded p-1">
+                    <div className="bg-red-600/30 rounded p-1.5 flex-shrink-0">
                       <ArrowRight className="h-4 w-4 text-red-400" />
                     </div>
                   )}
-                  <div className="flex-1">
-                    <div className="text-sm font-medium truncate">{node.data.label}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium node-text">{node.data.label}</div>
                     <div className="text-xs text-gray-400">{node.type}</div>
                   </div>
                 </div>
                 {node.data.details && (
-                  <div className="text-xs mt-1 text-gray-300 line-clamp-2">{node.data.details}</div>
+                  <div className="text-xs mt-1 text-gray-300 node-details">{node.data.details}</div>
                 )}
                 
                 {node.type !== 'end' && (
                   <button
-                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-blue-800 border border-blue-600 flex items-center justify-center hover:bg-blue-700 shadow-md"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-7 h-7 rounded-full bg-blue-800 border border-blue-600 flex items-center justify-center hover:bg-blue-700 shadow-md z-10"
                     onClick={(e) => {
                       e.stopPropagation();
                       startConnection(node.id);
                     }}
                   >
-                    <ArrowRight className="h-3 w-3 text-white" />
+                    <ArrowRight className="h-3.5 w-3.5 text-white" />
                   </button>
                 )}
               </div>

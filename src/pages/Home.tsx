@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { ChevronDown, Sparkles, ArrowRight, Check, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
+import VideoSection from "@/components/VideoSection";
 
 const Home = () => {
   const [activeSection, setActiveSection] = useState(0);
@@ -17,6 +18,7 @@ const Home = () => {
     { id: "intro", label: "Intro" },
     { id: "solutions", label: "Solutions" },
     { id: "approach", label: "Approach" },
+    { id: "video", label: "Video" },
     { id: "pricing", label: "Pricing" },
     { id: "faq", label: "FAQ" }
   ];
@@ -444,6 +446,13 @@ const Home = () => {
             ))}
           </div>
         </div>
+      </section>
+
+      <div className="h-24 md:h-36"></div>
+
+      {/* Video Section */}
+      <section id="video">
+        <VideoSection />
       </section>
 
       {/* Pricing Section - Interactive Cards */}

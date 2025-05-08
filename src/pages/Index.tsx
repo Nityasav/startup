@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import HowItWorks from "@/components/HowItWorks";
 import Benefits from "@/components/Benefits";
+import VideoSection from "@/components/VideoSection";
 import Pricing from "@/components/Pricing";
 import Cta from "@/components/Cta";
 import Footer from "@/components/Footer";
@@ -15,6 +16,7 @@ const Index = () => {
     features: null,
     howItWorks: null,
     benefits: null,
+    video: null,
     pricing: null,
     cta: null
   });
@@ -76,27 +78,31 @@ const Index = () => {
       
       {/* Main content sections */}
       <div ref={el => sectionsRef.current.hero = el}>
-      <Hero />
+        <Hero />
       </div>
       
       <div ref={el => sectionsRef.current.features = el}>
-      <Features />
+        <Features />
       </div>
       
       <div ref={el => sectionsRef.current.howItWorks = el}>
-      <HowItWorks />
+        <HowItWorks />
       </div>
       
       <div ref={el => sectionsRef.current.benefits = el}>
-      <Benefits />
+        <Benefits />
+      </div>
+      
+      <div ref={el => sectionsRef.current.video = el}>
+        <VideoSection />
       </div>
       
       <div ref={el => sectionsRef.current.pricing = el}>
-      <Pricing />
+        <Pricing />
       </div>
       
       <div ref={el => sectionsRef.current.cta = el}>
-      <Cta />
+        <Cta />
       </div>
       
       <Footer />
