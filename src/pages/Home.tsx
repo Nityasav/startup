@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { ChevronDown, Sparkles, ArrowRight, Check, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import VideoSection from "@/components/VideoSection";
+import AboutUs from "@/components/AboutUs";
 
 const Home = () => {
   const [activeSection, setActiveSection] = useState(0);
@@ -19,7 +20,7 @@ const Home = () => {
     { id: "solutions", label: "Solutions" },
     { id: "approach", label: "Approach" },
     { id: "video", label: "Video" },
-    { id: "pricing", label: "Pricing" },
+    { id: "about", label: "About Us" },
     { id: "faq", label: "FAQ" }
   ];
 
@@ -99,54 +100,6 @@ const Home = () => {
     { number: "02", title: "Design", description: "Create custom AI solutions for your needs" },
     { number: "03", title: "Deploy", description: "Seamlessly integrate with your systems" },
     { number: "04", title: "Optimize", description: "Continuously improve performance" }
-  ];
-
-  // Pricing plans
-  const plans = [
-    {
-      name: "Starter",
-      price: "$99",
-      period: "/month",
-      features: [
-        "5 AI solutions",
-        "2,000 operations/month",
-        "Basic analytics",
-        "5 team members",
-        "Email support"
-      ],
-      cta: "Get Started",
-      popular: false
-    },
-    {
-      name: "Professional",
-      price: "$299", 
-      period: "/month",
-      features: [
-        "20 AI solutions",
-        "10,000 operations/month",
-        "Advanced analytics dashboard",
-        "25 team members",
-        "Priority support",
-        "Custom integrations"
-      ],
-      cta: "Get Started",
-      popular: true
-    },
-    {
-      name: "Enterprise",
-      price: "Custom",
-      period: "",
-      features: [
-        "Unlimited AI solutions",
-        "Custom operations volume",
-        "Executive reporting",
-        "Unlimited team members",
-        "Dedicated account manager",
-        "Custom model training"
-      ],
-      cta: "Contact Sales",
-      popular: false
-    }
   ];
 
   // FAQ items
@@ -281,8 +234,17 @@ const Home = () => {
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
               <a 
+                href="https://medium.com/@nityasav/masterplan-venturly-3fa98e25d5bb" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group px-8 py-4 bg-transparent border border-blue-700 text-blue-400 hover:border-blue-500 hover:text-blue-300 rounded-full font-medium text-lg transition-all flex items-center justify-center"
+              >
+                Learn More
+                <ExternalLink className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </a>
+              <a 
                 href="#solutions" 
-                className="px-8 py-4 bg-transparent border border-blue-700 text-blue-400 hover:border-blue-500 hover:text-blue-300 rounded-full font-medium text-lg transition-all"
+                className="px-8 py-4 bg-transparent border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-zinc-300 rounded-full font-medium text-lg transition-all"
               >
                 Explore Solutions
               </a>
@@ -455,107 +417,9 @@ const Home = () => {
         <VideoSection />
       </section>
 
-      {/* Pricing Section - Interactive Cards */}
-      <section 
-        id="pricing" 
-        className="min-h-screen py-24 relative overflow-hidden"
-        style={{
-          background: "radial-gradient(circle at center, rgba(30, 64, 175, 0.15), rgba(0, 0, 0, 0.95) 70%)"
-        }}
-      >
-        <div className="container relative z-10 px-4 md:px-6">
-          <div className="text-center max-w-3xl mx-auto mb-20">
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
-              className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-blue-600 text-transparent bg-clip-text"
-            >
-              Transparent Pricing
-            </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl text-slate-300"
-            >
-              Choose the plan that best fits your business needs
-            </motion.p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {plans.map((plan, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ 
-                  scale: 1.02,
-                  boxShadow: "0 20px 40px rgba(0, 0, 0, 0.2)"
-                }}
-                className={cn(
-                  "relative rounded-2xl p-8 transition-all",
-                  plan.popular 
-                    ? "bg-blue-900/20 border-2 border-blue-500/50" 
-                    : "bg-black/30 border border-blue-900/20 hover:border-blue-600/30"
-                )}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-4 left-0 right-0 flex justify-center">
-                    <span className="bg-blue-500 text-white text-sm font-medium py-1 px-3 rounded-full">
-                      Most Popular
-                    </span>
-                  </div>
-                )}
-                
-                <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-                <div className="flex items-end gap-1 mb-6">
-                  <span className="text-4xl font-bold text-white">{plan.price}</span>
-                  {plan.period && <span className="text-slate-400 mb-1">{plan.period}</span>}
-                </div>
-                
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <Check className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                      <span className="text-slate-300">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                
-                <button
-                  className={cn(
-                    "w-full py-3 px-4 rounded-lg font-medium transition-colors",
-                    plan.popular 
-                      ? "bg-blue-500 hover:bg-blue-400 text-white" 
-                      : plan.name === "Enterprise" 
-                        ? "bg-transparent border border-blue-500 hover:bg-blue-900/20 text-blue-400"
-                        : "bg-blue-600 hover:bg-blue-500 text-white"
-                  )}
-                >
-                  {plan.cta}
-                </button>
-              </motion.div>
-            ))}
-          </div>
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-16 text-center"
-          >
-            <p className="text-slate-400 max-w-2xl mx-auto">
-              All plans include our core AI platform features. Upgrade or downgrade anytime. 
-              Need a custom solution? <a href="/contact" className="text-blue-400 underline hover:text-blue-300">Contact our sales team</a>.
-            </p>
-          </motion.div>
-        </div>
+      {/* About Us Section */}
+      <section id="about">
+        <AboutUs />
       </section>
 
       {/* FAQ Section - Animated Accordion */}
